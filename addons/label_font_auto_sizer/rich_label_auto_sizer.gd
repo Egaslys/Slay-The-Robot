@@ -108,7 +108,8 @@ func _update_texture_caches(new_text: String) -> void:
 	var new_paths = []
 
 	var re = RegEx.new()
-	re.compile("\\[img.*\\](?P<path>.*)\\[\\/img\\]")
+	var regex_str: String = "\\[img(\\swidth=\\d+)?\\]" + "(?<path>.*?\\.\\w*)" + "\\[\\/img\\]"
+	re.compile(regex_str)
 
 	var re_matches = re.search_all(new_text)
 	for re_match in re_matches:

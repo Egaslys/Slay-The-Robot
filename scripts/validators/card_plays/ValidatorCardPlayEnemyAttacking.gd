@@ -1,14 +1,15 @@
-# Validator for checking if an action's targets are all attacking
-# NOTE: See ValidatorEnemyAttacking
+## Validator for checking if an action's targets are all attacking. This is used after
+## a target has been selected, eg during a card play.
+## NOTE: See ValidatorEnemyAttacking which simply checks if any enemy is attacking.
 extends BaseValidator
 
 func _validation(_card_data: CardData, action: BaseAction, values: Dictionary[String, Variant]) -> bool:
 
 	if action == null:
-		push_error("No card given")
+		DebugLogger.log_error("ValidatorCardPlayEnemyAttacking: No card given")
 		return false
 	elif action.card_play_request == null:
-		push_error("No card play given")
+		DebugLogger.log_error("ValidatorCardPlayEnemyAttacking: No card play given")
 		return false
 	else:
 		# use selected target if one exists

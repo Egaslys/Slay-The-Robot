@@ -81,7 +81,7 @@ func _perform_actions() -> void:
 			current_action = current_action_queue.pop_front()
 			# skip short circuited actions
 			if current_action.is_action_short_circuited():
-				if len(Global.get_tree().get_nodes_in_group("enemies")) == 0:
+				if not Global.are_remaining_enemies():
 					continue
 			# perform action
 			current_action.perform_action()

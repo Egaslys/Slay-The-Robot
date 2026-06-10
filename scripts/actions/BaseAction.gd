@@ -93,53 +93,66 @@ func _to_string():
 
 ### Keep
 
+## Gets the parent card used for this action if one exists
+func get_action_card_data() -> CardData:
+	if card_play_request == null:
+		return null
+	return card_play_request.card_data
+
 func is_async_action() -> bool:
 	# override true if the action is async and requires some kind of user input or indefinite wait
 	# ActionHandler will stop until action_async_finished is emitted
 	# See BaseAsyncAction
 	return false
 
+## Gets the targets of the action at time of execution, based on the supplied targets and the target override.
+## This will also validate if any of the targets are alive (hp > 0) and ignore the ones that aren't.
+## NOTE: You may use the force_dead_targets action value in niche situations where you want
+## to use actions on dead targets
 func get_adjusted_action_targets() -> Array[BaseCombatant]:
-	# Gets the targets of the action at time of execution, based on the supplied targets and the target override
-	# this will also validate if any of the targets are alive
 	var target_override: int = get_action_value("target_override", TARGET_OVERRIDES.SELECTED_TARGETS)
+	var force_dead_targets: bool = get_action_value("force_dead_targets", false)
 	var returned_targets: Array[BaseCombatant] = []
 	
 	match target_override:
 		TARGET_OVERRIDES.SELECTED_TARGETS:
 			for target in targets:
 				if is_instance_valid(target):
-					if target.is_alive():
+					if target.is_alive() or force_dead_targets:
 						returned_targets.append(target)
 		TARGET_OVERRIDES.PARENT:
 			return [parent_combatant]
 		TARGET_OVERRIDES.PLAYER:
 			for player in Global.get_tree().get_nodes_in_group("players"):
-				if player.is_alive():
+				if player.is_alive() or force_dead_targets:
 					returned_targets.append(player)
 		TARGET_OVERRIDES.ALL_COMBATANTS:
 			for player in Global.get_tree().get_nodes_in_group("players"):
-				if player.is_alive():
+				if player.is_alive() or force_dead_targets:
 					returned_targets.append(player)
-			for enemy in Global.get_tree().get_nodes_in_group("enemies"):
-				if enemy.is_alive():
+			for enemy in Global.get_tree().get_nodes_in_group("enemies_alive_or_dead"):
+				if enemy.is_alive() or force_dead_targets:
 					returned_targets.append(enemy)
 		TARGET_OVERRIDES.ALL_ENEMIES:
-			for enemy in Global.get_tree().get_nodes_in_group("enemies"):
-				if enemy.is_alive():
+			for enemy in Global.get_tree().get_nodes_in_group("enemies_alive_or_dead"):
+				if enemy.is_alive() or force_dead_targets:
 					returned_targets.append(enemy)
 		TARGET_OVERRIDES.LEFTMOST_ENEMY:
-			var enemy: Enemy = Global.get_tree().get_first_node_in_group("enemies")
+			# TODO: This will fail if new enemies are spawned in.
+			var enemy: Enemy = Global.get_tree().get_first_node_in_group("enemies_alive_or_dead")
 			if enemy != null:
-				returned_targets.append(enemy)
+				if enemy.is_alive() or force_dead_targets:
+					returned_targets.append(enemy)
 		TARGET_OVERRIDES.ENEMY_ID:
-			var enemies: Array[Node] = Global.get_tree().get_nodes_in_group("enemies")
+			var enemies: Array[Node] = Global.get_tree().get_nodes_in_group("enemies_alive_or_dead")
 			var enemy_ids: Array[String] = []
 			enemy_ids.assign(get_action_value("enemy_ids", []))
 			for enemy: Enemy in enemies:
 				if enemy_ids.has(enemy.enemy_data.object_id):
-					returned_targets.append(enemy)
+					if enemy.is_alive() or force_dead_targets:
+						returned_targets.append(enemy)
 		TARGET_OVERRIDES.RANDOM_ENEMY:
+			# TODO: This one does not factor in force_dead_targets
 			var enemies: Array[Node] = Global.get_tree().get_nodes_in_group("enemies")
 			
 			var rng_name: String = get_action_value("rng_name", "rng_targeting")
@@ -151,23 +164,51 @@ func get_adjusted_action_targets() -> Array[BaseCombatant]:
 			
 	return returned_targets
 
+## Searches down the value hierarchy to find a corresponding value to use for this action.
+## Returns given given default if none found.
+## if a custom key is used it will be converted into a proper key then searched, allowing for multiple
+## actions to pull from different values for the same key name.
+## NOTE: As many actions are intercepted, an additional layer is built on top of the hierarchy, called
+## shadowing. See ActionInterceptorProcessor.get_shadowed_action_values() for more.
 func get_action_value(key: String, default_value: Variant) -> Variant:
-	# searches down an action's value hierarchy to find a corresponding value
-	# returns given given default if none found
-	# if a custom key is used it will be converted into a proper key then searched
+	var custom_action_value_keys: Dictionary = values.get("custom_key_names", {})	# allows for having cards/actions use custom key names that convert to regular action key names. Useful for having cards with 2 of the same action but different values
+	var key_name: String = custom_action_value_keys.get(key, key)
+	# search action's values first
+	if values.has(key_name):
+		return values[key_name]
+	# search CardPlayRequest values shared between multiple actions
+	if card_play_request != null:
+		# search CardPlayRequest's values
+		# these are duplicated from card_values and freely modified
+		if card_play_request.card_values.has(key_name):
+			return card_play_request.card_values.get(key_name, default_value)
+		# search Card's card_values
+		# This will technically almost never hit as if a card is defined the value will likely already be in
+		# CardPlayRequest.card_values, but is left for completeness.
+		if card_play_request.card_data != null:
+			return card_play_request.card_data.card_values.get(key_name, default_value)
+	# search Player's values. This allows custom default values for certain rare character actions.
+	if Global.player_data.player_values.has(key_name):
+		return Global.player_data.player_values.get(key_name, default_value)
+	# fallback to a default value if it doesn't exist anywhere.
+	return default_value
+
+## Returns if a value exists in the value hierarchy
+func has_action_value(key: String) -> bool:
 	var custom_action_value_keys: Dictionary = values.get("custom_key_names", {})	# allows for having cards/actions use custom key names that convert to regular action key names. Useful for having cards with 2 of the same action but different values
 	var key_name: String = custom_action_value_keys.get(key, key)
 	if values.has(key_name):
-		return values[key_name]
+		return true
 	if card_play_request != null:
 		if card_play_request.card_values.has(key_name):
-			return card_play_request.card_values.get(key_name, default_value)
+			return true
 		
 		if card_play_request.card_data != null:
-			return card_play_request.card_data.card_values.get(key_name, default_value)
+			if card_play_request.card_data.card_values.has("key_name"):
+				return true
 	if Global.player_data.player_values.has(key_name):
-		return Global.player_data.player_values.get(key_name, default_value)
-	return default_value
+		return true
+	return false
 
 ## This method is used during perform_action() or perform_async_action() to gather the combination
 ## of this action and its targets, parents, and interceptors

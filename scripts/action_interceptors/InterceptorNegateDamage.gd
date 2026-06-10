@@ -19,8 +19,7 @@ func process_action_interception(action_interceptor_processor: ActionInterceptor
 	if damage > target_block:
 		# reduce the status by 1
 		target_combatant.add_status_effect_charges(NEGATE_DAMAGE_STATUS_EFFECT_ID, -1)
-	
-		action_interceptor_processor.shadowed_action_values["damage"] = target_block
+		action_interceptor_processor.set_shadowed_action_values("damage", target_block)
 		return ACTION_ACCEPTENCES.STOPPED
 	
 	return ACTION_ACCEPTENCES.CONTINUE

@@ -10,10 +10,14 @@ config_version=5
 
 [application]
 
-config/name="Slay The Robot"
+config/name="Slay the Robot"
 run/main_scene="res://scenes/Root.tscn"
 config/features=PackedStringArray("4.4")
 config/icon="uid://8kopj5luv8dc"
+
+[audio]
+
+buses/default_bus_layout="res://sounds/default_bus_layout.tres"
 
 [autoload]
 
@@ -23,10 +27,14 @@ Scripts="*res://autoload/Scripts.gd"
 FileLoader="*res://autoload/FileLoader.gd"
 Random="*res://autoload/Random.gd"
 Global="*res://autoload/Global.gd"
+GlobalTestDataGenerator="*res://autoload/GlobalTestDataGenerator.gd"
+GlobalProdDataGenerator="*res://autoload/GlobalProdDataGenerator.gd"
 ActionHandler="*res://autoload/ActionHandler.gd"
 ActionGenerator="*res://autoload/ActionGenerator.gd"
 DebugLogger="*res://autoload/DebugLogger.gd"
-UIDGenerator="*res://autoload/UIDGenerator.gd"
+HandManager="*res://autoload/HandManager.gd"
+SoundManager="*res://addons/sound_manager/sound_manager.gd"
+StatsHandler="*res://autoload/StatsHandler.gd"
 
 [debug]
 
@@ -38,6 +46,10 @@ gdscript/warnings/integer_division=0
 window/size/viewport_width=1200
 window/size/viewport_height=700
 window/size/resizable=false
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/sound_manager/plugin.cfg")
 
 [input]
 

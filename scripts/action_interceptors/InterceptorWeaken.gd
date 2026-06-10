@@ -12,6 +12,6 @@ func process_action_interception(action_interceptor_processor: ActionInterceptor
 	
 	var damage: int = action_interceptor_processor.get_shadowed_action_values("damage", 0)
 	damage = int(damage * WEAKEN_DAMAGE_MULTIPLIER)
-	action_interceptor_processor.shadowed_action_values["damage"] = damage
+	action_interceptor_processor.set_shadowed_action_values("damage", damage)
 	
 	return ACTION_ACCEPTENCES.CONTINUE

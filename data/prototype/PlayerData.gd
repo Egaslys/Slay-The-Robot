@@ -1,4 +1,4 @@
-## Prototyped data; maintains mutable data about a run
+## Prototyped data; maintains mutable data about a run.
 ## See player_character_object_id and CharacterData for read only portion.
 extends PrototypeData
 class_name PlayerData
@@ -10,10 +10,15 @@ class_name PlayerData
 
 @export var player_money: int = 0
 
-var player_energy: int = 10 # in combat energy. Not saved.
-@export var player_energy_max: int = 10
+var player_energy: int = 3 # in combat energy. Not saved.
+## The energy the player gains each turn. This can be modified.
+@export var player_energy_max: int = 3
 
 var player_block: int = 0 # in combat block. Not saved.
+
+## The time the player has been playing the current run, in milliseconds.
+## See: RunTimer.
+@export var player_run_time: float = 0.0
 
 ## A json friendly dictionary containing values that can be embedded onto the player
 ## for extensibility, custom UI, and general mod support purposes.
@@ -33,9 +38,12 @@ var player_block: int = 0 # in combat block. Not saved.
 
 ## Stores the shop at the player's current location, if one exists. Does not determine if there is
 ## a shop accessible, that is determined by the location type at player_location_id
+## NOTE: This isn't usually saved because shop data is populated when you press the shop button
+## for the first time at a location and autosaves happen when you reach a location.
+## Consider removing the @export flag unless you want to save the game while at a shop.
 @export var player_shop_data: ShopData = null
 
-### RNG
+#region RNG
 @export var player_run_seed: int = 0
 
 ## Maps rng names to a random number generator "track". This allows seperate tracks of RNG to function
@@ -55,16 +63,20 @@ var player_block: int = 0 # in combat block. Not saved.
 	#"rng_card_drafting": RandomNumberGenerator.new(),
 	#"rng_shuffle": RandomNumberGenerator.new(), # whenever the player's deck is shuffled or reshuffled
 	#"rng_pile_insert": RandomNumberGenerator.new(), # whenever the a card is randomly inserted into a pile
+	#"rng_card_decoration": RandomNumberGenerator.new(), # whenever a card has a random decorator applied. See: ActionDecorateCards
 	#"rng_reward_card_drafts": RandomNumberGenerator.new(), # cards rewards at the end of a fight. See: Random.get_location_card_rewards()
 	#"rng_reward_money": RandomNumberGenerator.new(), # money rewards at the end of a fight. See: Random.get_location_money_reward()
 	#"rng_card_transforming": RandomNumberGenerator.new(), See ActionTransformCards
 	#"rng_enemy_spawning": RandomNumberGenerator.new(), # See ActionSummonEnemies
+	#"rng_enemy_health": RandomNumberGenerator.new(), # How much max hp an enemy gets. See EnemyData.randomize_health()
 	#"rng_enemy_attack_patterns": RandomNumberGenerator.new(),
 	#"rng_shops": RandomNumberGenerator.new(), # used to populate shop items
 	#"rng_artifact_rewards": RandomNumberGenerator.new(), # used to populate artifacts on run start, and decide artifact rarity selections
 	#"rng_run_start_options": RandomNumberGenerator.new(), # controls which run start options are seen
 	#"rng_enemy_spawning": RandomNumberGenerator.new(), # controls spawning weights
 }
+
+#endregion
 
 ## Maintains a copy of the event ids from a given EventPoolData, used when going to a new LocationData
 ## with an undefined event id and defined event pool.
@@ -80,25 +92,29 @@ var player_block: int = 0 # in combat block. Not saved.
 @export var player_event_blacklisted_ids: Array[String] = []
 
 
-### Combat
-## Keeps track of everything that happened in a combat instance
-@export var player_current_combat_stats: CombatStatsData = null
-@export var player_previous_combat_stats: Array[CombatStatsData] = []
+## Keeps track of everything that happened across the run
+@export var player_run_stats: RunStatsData = null
 
-### Run modifiers
-const DIFFICULTY_RUN_MODIFIER_OBJECT_IDS: Array[String] = [ # maps each difficulty modifier incrementally
-	"run_modifier_difficulty_1", "run_modifier_difficulty_2", "run_modifier_difficulty_3",
-	"run_modifier_difficulty_4", "run_modifier_difficulty_5",
-]
+## Current run's difficulty. Starts at 0
+@export var player_run_difficulty_level: int = 0
+## All modifiers, both standard difficulty and custom, applied to this run
+@export var player_run_modifier_object_ids: Array[String] = []
+## The types of rest actions populated at rest sites for this run.
+## See: ActionUpdateRestActions
+@export var player_available_rest_action_object_ids: Array[String] = [
+	"rest_action_rest",
+	"rest_action_upgrade_card",
+	"rest_action_remove_cards",
+	"rest_action_add_random_consumable",
+	"rest_action_enchant_cards"
+	]
 
-@export var player_run_difficulty_level: int = 0	# current run's difficulty. Starts at 0
-@export var player_run_modifier_object_ids: Array[String] = []	# all modifiers, both standard and custom, applied to this run
-@export var player_available_rest_action_object_ids: Array[String] = ["rest_action_rest", "rest_action_upgrade_card", "rest_action_remove_cards", "rest_action_add_random_consumable"]	# the types of rest actions populated at rest sites
+#region Card Rewards
 
-### Card Rewards
-
-@export var reward_cards_per_draft: int = 3	# number of cards in a combat reward draft
-@export var reward_drafts: int = 1 # number of drafts in a combat reward
+## The number of cards in a combat reward draft. Changing this will affect future card rewards.
+@export var reward_cards_per_draft: int = 3
+## The number of drafts in a combat reward. Almost always 1, but can be changed.
+@export var reward_drafts: int = 1
 
 ## A generated and cached CardFilter containing all draftable cards available to the player. This is
 ## recompiled every time the player is made to have access to different card packs or cards via calling
@@ -117,8 +133,9 @@ var player_reward_card_rarity_cache: Dictionary[int, Array] = {}
 @export var player_rare_card_modifier_current: float = 0.0	# the current modifier applied to improve rare card chances
 @export var player_rare_card_modifier_base: float = 0.0: set = set_player_rare_card_modifier_base	# the value the rarity modifier is reset to after a rare card is seen
 @export var player_rare_card_increment_rate: float = 1.5	# every time a card is drafted that isn't rare, increase the modifier by this amount
+#endregion
 
-### Artifacts
+#region Artifact Rewards
 
 ## Maps ArtifactData object_uids to prototype instances of ArtifactData owned by the player. 
 @export var player_artifact_uid_to_artifact_data: Dictionary[String, ArtifactData] = {}
@@ -131,7 +148,7 @@ var player_reward_card_rarity_cache: Dictionary[int, Array] = {}
 ## NOTE: Shops will search this in reverse order.
 @export var player_artifact_pool: Array[String] = []
 
-## A list of ArtifactData object ids that represent what artifacts a player is allowed to see in a run.
+## A list of ArtifactPackData object ids that represent what artifacts a player is allowed to see in a run.
 ## Typically will be their color, and white(non specific) artifacts. This is used to 
 ## generate player_artifact_available_artifact_id_cache. Whenever this value is modified you
 ## should regenerate the cache.
@@ -146,32 +163,44 @@ var player_reward_card_rarity_cache: Dictionary[int, Array] = {}
 var player_artifact_available_artifact_id_cache: Dictionary[String, Variant] = {
 	#"<artifact_object_id>": null
 }
+#endregion
 
-### Cards
+#region Consumable Rewards
+## Works same as player_artifact_pack_ids. Determines what consumables a player can see in rewards.
+@export var player_consumable_pack_ids: Array[String] = []
+
+## Consumables that can never be included in consumable drafts. Does not take effect until cache regenerated
+@export var player_reward_draft_consumable_id_blacklist: Array[String] = []
+## Consumables that will always be included in consumable drafts.  Does not take effect until cache regenerated.
+@export var player_reward_draft_consumable_id_whitelist: Array[String] = []
+
+var player_reward_consumable_filter_cache: ConsumableFilter = null
+
+## Works same as player_artifact_available_artifact_id_cache. A Set structure that defines
+## what consumables can be seen by the player.
+var player_consumable_available_consumable_id_cache: Dictionary[String, Variant] = {
+	#"<consumable_object_id>": null
+}
+
+## All the consumable object ids available to the player, sorted into rarity buckets and cached. Used for consumable rewards.
+var player_reward_consumable_rarity_cache: Dictionary[int, Array] = {}
+
+#endregion
+
+
+# Cards
 
 ## The player's permanent deck, persisting between combat. Changes to cards here will be
 ## permanent.
 @export var player_deck: Array[CardData] = []
 
-# in combat
-## How many cards player naturally draws at start of turn. See: ActionGenerator.generate_start_of_turn_draw_actions().
-const PLAYER_CARD_DRAW_PER_TURN: int = 5
-## The default max number of cards available in player's hand. Exceeding this will discard the cards.
-## Intercept ActionAddCardsToHand and ActionDraw's hand_card_count_max to adjust the max hand size.
-const PLAYER_DEFAULT_HAND_CARD_COUNT_MAX: int = 10
 
-# comat related card piles. These are reset before and after combat and not saved.
-var player_discard: Array[CardData] = []
-var player_exhaust: Array[CardData] = []
-var player_draw: Array[CardData] = []
-var player_hand: Array[CardData] = []
-
-### Statuses
+# Statuses
 
 ## Maps status effect id to Array[BaseStatusEffect], allowing for potential duplicate status types.
 var player_status_effects: Dictionary[String, Array] = {}
 
-### Consumables
+#region Consumables
 @export var player_consumable_slot_count: int = 3	# max number of slots available
 @export var player_consumable_slot_to_consumable_object_id: Dictionary[String, String] = {}	# maps a numerical slot index to a consumable id. 0 indexed
 
@@ -179,29 +208,21 @@ var player_status_effects: Dictionary[String, Array] = {}
 ## new PlayerData instance or loading the game.
 ## Not the same as _init()
 func init():
-	_connect_signals()
 	generate_cache()
-
-func _connect_signals() -> void:
-	Signals.combat_started.connect(_on_combat_started)
-	Signals.combat_ended.connect(_on_combat_ended)
 
 ## Forces a regeneration of all internal cached data structures.
 func generate_cache() -> void:
 	regenerate_card_draft_card_filter()
 	regenerate_artifact_available_id_cache()
+	regenerate_consumable_available_id_cache()
 
-func _on_combat_started(event_id: String) -> void:
-	player_current_combat_stats = CombatStatsData.new(event_id)
-
-func _on_combat_ended() -> void:
-	if player_current_combat_stats != null:
-		player_previous_combat_stats.append(player_current_combat_stats)
-	player_current_combat_stats = null
-
+## Adds or subtracts money from the player
+## If goes into negative amounts, the proper delta will be calculated 
 func add_money(amount: int) -> void:
+	var old_player_money_amount: int = player_money
 	player_money = max(player_money + amount, 0)
-	Signals.player_money_changed.emit()
+	var delta: int = player_money - old_player_money_amount
+	Signals.player_money_changed.emit(delta)
 
 ## Gets an rng track for the run. If it does not exist create one.
 func get_player_rng(rng_name: String) -> RandomNumberGenerator:
@@ -214,7 +235,11 @@ func get_player_rng(rng_name: String) -> RandomNumberGenerator:
 	player_rng[rng_name] = rng
 	return rng
 
-### Rest actions
+func set_player_value(value_name: String, value: Variant) -> void:
+	player_values[value_name] = value
+
+#endregion
+#region Rest actions
 
 func enable_rest_action(rest_action_object_id: String) -> void:
 	# enables a rest action to populate at future rest sites
@@ -225,7 +250,8 @@ func disable_rest_action(rest_action_object_id: String) -> void:
 	# disables a rest action from being populated at future rest sites
 	player_available_rest_action_object_ids.erase(rest_action_object_id)
 
-### Event Pools
+#endregion
+#region Event Pools
 
 ## Obtains the next valid event from a given EventPoolData ID. If it does not exist, it will populate
 ## A copy of the pool into the player's event pools
@@ -260,6 +286,9 @@ func get_next_event_object_id_from_pool(event_pool_object_id: String) -> String:
 	var failed_event_object_ids: Array[String] = [] # events that fail their validators and must be handled
 	for event_object_id: String in event_pool_event_object_ids:
 		var event_data: EventData = Global.get_event_data(event_object_id)
+		if event_data == null:
+			DebugLogger.log_error("No event with ID \"{0}\" found".format(event_object_id))
+			continue
 		
 		var validators_passed: bool = event_data.validate_event()
 		if validators_passed:
@@ -270,6 +299,9 @@ func get_next_event_object_id_from_pool(event_pool_object_id: String) -> String:
 	# event pool.
 	for failed_event_object_id: String in failed_event_object_ids:
 		var event_data: EventData = Global.get_event_data(failed_event_object_id)
+		if event_data == null:
+			DebugLogger.log_error("No event with ID \"{0}\" found".format(failed_event_object_id))
+			continue
 		#TODO
 		var validator_failed_strategy = event_data.location_event_pool_validator_failed_strategy
 		# if not keeping, remove it
@@ -305,8 +337,17 @@ func get_next_event_object_id_from_pool(event_pool_object_id: String) -> String:
 	
 	return next_event_object_id
 
+#endregion
+#endregion Consumables
 
-### Consumables
+## Gets ids of all consumables from non empty slots.
+## Allows duplicates.
+func get_available_consumable_ids() -> Array[String]:
+	var available_consumable_ids: Array[String] = []
+	for consumable_slot: String in player_consumable_slot_to_consumable_object_id:
+		available_consumable_ids.append(player_consumable_slot_to_consumable_object_id[consumable_slot])
+	
+	return available_consumable_ids
 
 func are_consumable_slots_full() -> bool:
 	return len(player_consumable_slot_to_consumable_object_id.keys()) >= player_consumable_slot_count
@@ -320,7 +361,8 @@ func get_consumable_in_slot(consumable_slot: int) -> ConsumableData:
 func get_empty_consumable_slot_count() -> int:
 	return player_consumable_slot_count - len(player_consumable_slot_to_consumable_object_id.keys())
 
-### Health
+#endregion
+#region Health
 
 func heal_percentage(percent: float):
 	var percentage_health: int = int(ceil(float(Global.player_data.player_health_max) * percent))
@@ -336,41 +378,12 @@ func set_health(health_amount: int, health_amount_max: int = player_health_max) 
 	player_health = clamp(0, health_amount, player_health_max)
 	Signals.player_health_changed.emit()
 
-### Deck
-
-func get_pile(card_pick_type: int) -> Array[CardData]:
-	match card_pick_type:
-		ActionBasePickCards.CARD_PICK_TYPES.HAND:
-			return player_hand
-		ActionBasePickCards.CARD_PICK_TYPES.DECK:
-			return player_deck
-		ActionBasePickCards.CARD_PICK_TYPES.COMBAT_DECK:
-			var combat_deck: Array[CardData] = []
-			combat_deck += player_draw
-			combat_deck += player_discard
-			combat_deck += player_hand
-			return combat_deck
-		ActionBasePickCards.CARD_PICK_TYPES.DRAW:
-			return player_draw
-		ActionBasePickCards.CARD_PICK_TYPES.DISCARD:
-			return player_discard
-		ActionBasePickCards.CARD_PICK_TYPES.EXHAUST:
-			return player_exhaust
-		
-		ActionBasePickCards.CARD_PICK_TYPES.PLAYED_THIS_TURN:
-			return player_current_combat_stats.get_card_data_played_this_turn(false)
-		ActionBasePickCards.CARD_PICK_TYPES.PLAYED_LAST_TURN:
-			return player_current_combat_stats.get_card_data_played_last_turn(false)
-		
-	return player_hand
-
-
+#endregion
+#region Deck
 func add_card_to_deck(card_data: CardData) -> void:
 	player_deck.append(card_data)
 	
-	var card_play_request: CardPlayRequest = CardPlayRequest.new()
-	card_play_request.card_data = card_data
-	card_play_request.selected_target = null
+	var card_play_request: CardPlayRequest = HandManager.create_card_play_request(card_data, null, false, false)
 	var player: Player = Global.get_player()
 	var card_add_to_deck_actions: Array[BaseAction] = ActionGenerator.create_actions(player, card_play_request, [], card_data.card_add_to_deck_actions, null)
 	ActionHandler.add_actions(card_add_to_deck_actions)
@@ -380,9 +393,7 @@ func add_card_to_deck(card_data: CardData) -> void:
 func remove_card_from_deck(card_data: CardData) -> void:
 	player_deck.erase(card_data)
 	
-	var card_play_request: CardPlayRequest = CardPlayRequest.new()
-	card_play_request.card_data = card_data
-	card_play_request.selected_target = null
+	var card_play_request: CardPlayRequest = HandManager.create_card_play_request(card_data, null, false, false)
 	var player: Player = Global.get_player()
 	var card_remove_from_deck_actions: Array[BaseAction] = ActionGenerator.create_actions(player, card_play_request, [], card_data.card_remove_from_deck_actions, null)
 	ActionHandler.add_actions(card_remove_from_deck_actions)
@@ -391,9 +402,7 @@ func remove_card_from_deck(card_data: CardData) -> void:
 
 func transform_card_in_deck(card_data: CardData, new_card_object_id: String) -> void:
 	# perform transform actions on old card
-	var card_play_request: CardPlayRequest = CardPlayRequest.new()
-	card_play_request.card_data = card_data
-	card_play_request.selected_target = null
+	var card_play_request: CardPlayRequest = HandManager.create_card_play_request(card_data, null, false, false)
 	var player: Player = Global.get_player()
 	var card_transform_in_deck_actions: Array[BaseAction] = ActionGenerator.create_actions(player, card_play_request, [], card_data.card_transform_in_deck_actions, null)
 	ActionHandler.add_actions(card_transform_in_deck_actions)
@@ -405,7 +414,8 @@ func transform_card_in_deck(card_data: CardData, new_card_object_id: String) -> 
 	
 	Signals.card_transformed_in_deck.emit(card_data)
 
-### Run Artifacts
+#endregion
+#region Run Artifacts
 
 ## Generates a list of all artifacts the player can theoretically encounter in a run. Should only be called
 ## on run start from Global.start_run().
@@ -492,7 +502,8 @@ func get_next_artifacts_from_pool(artifact_count: int, artifact_rarities: Array[
 func remove_artifact_from_pool(artifact_object_id: String) -> void:
 	player_artifact_pool.erase(artifact_object_id)
 
-### Player Artifacts
+#endregion
+#region Player Artifacts
 
 func add_artifact(artifact_id: String) -> void:
 	# adds an artifact to the player as if they obtained it
@@ -500,7 +511,7 @@ func add_artifact(artifact_id: String) -> void:
 		var artifact_data: ArtifactData = Global.get_artifact_data_from_prototype(artifact_id)
 		
 		if artifact_data == null:
-			push_error("No artifact of id ", artifact_id)
+			DebugLogger.log_error("Player.add_artifact(): No artifact of id \"{0}\"".format([artifact_id]))
 		else:
 			player_artifact_uid_to_artifact_data[artifact_data.object_uid] = artifact_data
 		
@@ -509,6 +520,7 @@ func add_artifact(artifact_id: String) -> void:
 			var artifact_script: BaseArtifact = artifact_script_asset.new(artifact_data)
 			artifact_script.add_artifact()
 			Signals.player_artifacts_changed.emit()
+			Signals.player_artifact_added.emit(artifact_data)
 			
 			# remove artifact from spawn pool in case it wasn't already
 			remove_artifact_from_pool(artifact_data.object_id)
@@ -516,7 +528,6 @@ func add_artifact(artifact_id: String) -> void:
 ## Removes an artifact of a given type from player. If remove_multiples = true all instances of
 ## a given type will be removed.
 func remove_artifact(artifact_id: String, remove_multiples: bool = true) -> void:
-	
 	var artifacts: Array[ArtifactData] = get_player_artifacts_with_artifact_id(artifact_id)
 	for artifact_data: ArtifactData in artifacts:
 		# use a temp artifact script to perform any logic if the artifact has effect when removed
@@ -526,6 +537,7 @@ func remove_artifact(artifact_id: String, remove_multiples: bool = true) -> void
 		
 		player_artifact_uid_to_artifact_data.erase(artifact_data.object_uid)
 		Signals.player_artifacts_changed.emit()
+		Signals.player_artifact_removed.emit(artifact_data)
 		
 		# prevents multiple of an artifact from being removed
 		if not remove_multiples:
@@ -542,19 +554,24 @@ func get_player_artifacts_with_artifact_id(artifact_object_id: String) -> Array[
 			returned_artifacts.append(artifact_data)
 	
 	return returned_artifacts
+#endregion
 
-### Combat
+## Gets the texture corresponding to the color for this player.
+func get_player_character_color_texture_path() -> String:
+	if player_character_object_id == "":
+		return ""
+	var character_data: CharacterData = Global.get_character_data(player_character_object_id)
+	if character_data == null:
+		return ""
+	if character_data.character_color_id == "":
+		return ""
+	var color_data: ColorData = Global.get_color_data(character_data.character_color_id)
+	if color_data != null:
+		return color_data.color_energy_icon_texture_path
+	
+	return ""
 
-func generate_combat_deck() -> Array[CardData]:
-	# iterates over each card in the player's deck, making a copy of it and assigning the parent to the copied card
-	var combat_deck: Array[CardData] = []
-	for card_data in player_deck:
-		var copied_card = card_data.duplicate(true)
-		copied_card.parent_card = card_data
-		combat_deck.append(copied_card)
-	return combat_deck
-
-### Misc
+#region Misc
 
 func set_player_rare_card_modifier_base(value: float) -> void:
 	# adjusting the base also adjusts the current rarity value
@@ -576,7 +593,7 @@ func regenerate_card_draft_card_filter() -> void:
 	for card_object_id: String in player_reward_draft_card_id_blacklist:
 		card_unique_object_ids.erase(card_object_id)
 	for card_object_id: String in player_reward_draft_card_id_whitelist:
-			card_unique_object_ids[card_object_id] = null
+		card_unique_object_ids[card_object_id] = null
 	
 	# create a new filter using the read only card object ids provided
 	var card_filter: CardFilter = CardFilter.new([], card_unique_object_ids.keys())
@@ -607,6 +624,39 @@ func regenerate_artifact_available_id_cache() -> void:
 	
 	# cache results
 	player_artifact_available_artifact_id_cache = artifact_unique_object_ids
+
+## Gets all consumables the player can potentially obtain via packs, whitelists, and blacklists
+## merges the results and caches them.
+func regenerate_consumable_available_id_cache() -> void:
+	# merge all the consumable pack consumable ids together
+	var consumable_unique_object_ids: Dictionary[String, Variant] = {}
+	for player_consumable_pack_id: String in player_consumable_pack_ids:
+		var consumable_pack_consumable_filter: ConsumableFilter = Global.get_cached_consumable_filter(player_consumable_pack_id) # cache uses same id as consumable packs
+		consumable_unique_object_ids.merge(consumable_pack_consumable_filter.filtered_consumable_unique_object_ids)
+	
+	# whitelisted and blacklisted consumable ids
+	for consumable_object_id: String in player_reward_draft_consumable_id_blacklist:
+		consumable_unique_object_ids.erase(consumable_object_id)
+	for consumable_object_id: String in player_reward_draft_consumable_id_whitelist:
+		consumable_unique_object_ids[consumable_object_id] = null
+	
+	# create a new filter using the read only card object ids provided
+	var consumable_filter: ConsumableFilter = ConsumableFilter.new([], consumable_unique_object_ids.keys())
+	
+	# cache results
+	player_consumable_available_consumable_id_cache = consumable_unique_object_ids
+	player_reward_consumable_filter_cache = consumable_filter
+	
+	# sort consumables into buckets by rarity and cache
+	var reward_consumable_rarity_buckets: Dictionary[int, Array] = {}
+	for consumable_data: ConsumableData in consumable_filter.filtered_consumables:
+		var bucket: Array = reward_consumable_rarity_buckets.get(consumable_data.consumable_rarity, [])
+		bucket.append(consumable_data.object_id)
+		reward_consumable_rarity_buckets[consumable_data.consumable_rarity] = bucket
+	
+	# cache rarity buckets
+	player_reward_consumable_rarity_cache = reward_consumable_rarity_buckets
+#endregion
 
 func _get_native_properties() -> Dictionary:
 	return {

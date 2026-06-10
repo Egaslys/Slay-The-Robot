@@ -3,7 +3,7 @@
 extends BaseValidator
 
 func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
-	var combat_stats_data: CombatStatsData = Global.get_combat_stats()
+	var combat_stats_data: CombatStatsData = StatsHandler.current_combat_stats
 	
 	var stat_enum: int = _get_validator_value("stat_enum", values, _action, CombatStatsData.STATS.ENEMIES_KILLED)
 	var is_total_stat: bool = _get_validator_value("is_total_stat", values, _action, false) 	# whether to use turn or total stat for the fight
@@ -12,8 +12,8 @@ func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[S
 	
 	var stat_value: int = 0
 	if is_total_stat:
-		stat_value = combat_stats_data.get_total_stat(stat_enum)
+		stat_value = combat_stats_data.get_total_enum_stat(stat_enum)
 	else:
-		stat_value = combat_stats_data.get_turn_stat(stat_enum)
+		stat_value = combat_stats_data.get_turn_enum_stat(stat_enum)
 	
 	return _compare(stat_value, comparison_value, operator)

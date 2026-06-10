@@ -30,7 +30,7 @@ func _regenerate_displayed_cards() -> void:
 		await get_tree().process_frame
 		_is_rerendering = false
 	
-	var player_draw: Array[CardData] = Global.player_data.player_draw
+	var player_draw: Array[CardData] = HandManager.player_draw
 	var draw_pile_display_count: int = min(NUMBER_OF_DISPLAYED_CARDS, len(player_draw))
 	
 	_clear_displayed_cards()
@@ -41,7 +41,7 @@ func _regenerate_displayed_cards() -> void:
 		var card_data: CardData = player_draw[card_index]
 		var card: Card = Scenes.CARD.instantiate()
 		card_container.add_child(card)
-		card.init(card_data, 0, false, false)
+		card.init(card_data, 0, false)
 		card.position.y += Y_OFFSET_PER_CARD * y_index
 
 func _clear_displayed_cards() -> void:

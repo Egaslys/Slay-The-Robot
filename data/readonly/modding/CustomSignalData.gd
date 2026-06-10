@@ -1,6 +1,7 @@
-## Read only data object that controls the loading of a single mod.
-## These are used to generate CustomSignal objects in Signals, which are typically used
-## by CombatStatsData and ActionEmitCustomSignal
+## Read only data used to generate CustomSignal objects in Signals, which are typically used
+## by CombatStatsData and ActionEmitCustomSignal.
+## This can be used by mods to allow for easy hooks into the combat stats system without having
+## to overhaul the entire engine.
 extends SerializableData
 class_name CustomSignalData
 

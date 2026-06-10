@@ -12,3 +12,8 @@ class_name DialogueStateData
 
 ## The DialogueOptionData object_ids to populate for the user to select when this state is the current one
 @export var dialogue_state_dialogue_option_object_ids: Array[String] = []
+
+## Helper method used for data generation
+func add_state_dialogue_options(dialogue_options: Array[DialogueOptionData]) -> void:
+	for dialogue_option: DialogueOptionData in dialogue_options:
+		dialogue_state_dialogue_option_object_ids.append(dialogue_option.object_id)

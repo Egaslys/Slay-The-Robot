@@ -1,6 +1,7 @@
 # tooltip component which can display a list of keywords via KeywordTooltip
 # attached to objects as a ui component; not dynamically instantiated
 extends VBoxContainer
+class_name KeywordContainer
 
 func populate_card_keywords(card_data: CardData) -> void:
 	# wrapper function to call keywords on a card
@@ -17,12 +18,19 @@ func populate_card_keywords(card_data: CardData) -> void:
 	if card_data.card_is_retained:
 		if not card_keyword_object_ids.has("keyword_retain"):
 			card_keyword_object_ids.append("keyword_retain")
-	if card_data.card_is_ethereal:
+	if card_data.card_end_of_turn_destination == HandManager.EXHAUST_PILE:
 		if not card_keyword_object_ids.has("keyword_ethereal"):
 			card_keyword_object_ids.append("keyword_ethereal")
-	if card_data.card_exhausts:
+	if card_data.card_play_destination == HandManager.EXHAUST_PILE:
 		if not card_keyword_object_ids.has("keyword_exhaust"):
 			card_keyword_object_ids.append("keyword_exhaust")
+	if card_data.card_play_destination == HandManager.BANISH_PILE:
+		if not card_keyword_object_ids.has("keyword_banish"):
+			card_keyword_object_ids.append("keyword_banish")
+	if card_data.card_play_destination == HandManager.DRAW_PILE:
+		if not card_keyword_object_ids.has("keyword_rebound"):
+			card_keyword_object_ids.append("keyword_rebound")
+	
 	
 	populate_keywords(card_keyword_object_ids)
 
@@ -43,7 +51,7 @@ func _get_all_recursive_child_keywords(keyword_object_ids: Array[String]) -> Arr
 		var keyword_object_id: String = all_child_keywords[i]
 		var keyword_data: KeywordData = Global.get_keyword_data(keyword_object_id)
 		if keyword_data == null:
-			push_error("No keyword of id ", keyword_object_id, " found")
+			DebugLogger.log_error("EnemyContainer._get_all_recursive_child_keywords(): No keyword of id {0} found".format([keyword_object_id]))
 		else:
 			for child_keyword_object_id in keyword_data.keyword_child_keyword_object_ids:
 				if not all_child_keywords.has(child_keyword_object_id):

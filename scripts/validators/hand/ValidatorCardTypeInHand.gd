@@ -1,5 +1,6 @@
 ## Validator for determining if there are any cards in hand of a certain type.
-## ex checking that there are no attack cards, or exactly 3 attacks/skills.
+## Ex: checking that there are no attack cards, or exactly 3 attacks/skills.
+## NOTE: If an action is provided it will use the hand at time of play, rather than the current player hand.
 extends BaseValidator
 
 func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
@@ -10,7 +11,7 @@ func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[S
 	
 	# take the card and hand from action if one provided
 	var card_data: CardData = _card_data
-	var hand: Array[CardData] = Global.player_data.player_hand
+	var hand: Array[CardData] = HandManager.player_hand
 	if _action != null:
 		if _action.card_play_request != null:
 			card_data = _action.card_play_request.card_data

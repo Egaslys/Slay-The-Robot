@@ -1,7 +1,11 @@
-## Read only data for a dialogue used in an event. Provides a state machine through
+## Read only data for a dialogue used in a non-combat EventData. Provides a state machine through
 ## DialogueOptionData and DialogueStateData which is used by DialogueOverlay.
 extends SerializableData
 class_name DialogueData
+
+## The display name for the event
+## Rich text supported
+@export var dialogue_name_bbcode: String = "No Event Name Provided"
 
 ## The initial embedded DialogueStateData object_id used when starting this dialogue. This is used to
 ## populate the initial prompt and dialogue choices. 

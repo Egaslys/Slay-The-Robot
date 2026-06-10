@@ -20,6 +20,10 @@ const EXTERNAL_DIR_DATA_PATH: String = EXTERNAL_DIR_PATH + "data/"
 const MOD_LIST_FILE_NAME: String = "mod_list.json" # name of file containing info on how to load all mods
 const MOD_INFO_FILE_NAME: String = "mod_info.json" # name of file for info on loading a single mod
 
+var MISSING_TEXTURE: ImageTexture = ImageTexture.create_from_image(Image.load_from_file("res://sprites/missing_texture.png"))
+var MISSING_AUDIO: AudioStreamWAV = AudioStreamWAV.load_from_file("res://sounds/missing_audio.wav")
+
+
 const SAVE_DIR_PATH: String = EXTERNAL_DIR_PATH + "saves/" # file path of the save directory
 const SAVE_FILE_NAME: String = "save.json" # filename of the current run's save
 
@@ -31,7 +35,8 @@ const PROFILE_FILE_NAME: String = "profile.json"
 
 const AUTOSAVING_ENABLED: bool = true # disabling this makes testing easier
 
-var _cached_textures: Dictionary	= {}	# maps a partial image path to a loaded image
+var _cached_audio: Dictionary	= {}	# maps an audio path to a loaded sound
+var _cached_textures: Dictionary	= {}	# maps an image path to a loaded image
 var _cached_animations: Dictionary = {}	# maps unique animation ids to a spriteframe object
 
 ## Any time a read only data file is loaded for the first time, its directory and file name is stored here.
@@ -41,9 +46,20 @@ var _read_only_object_to_source_file_path: Dictionary[SerializableData, Array] =
 	# SerializableData: ["partial_path", "filename"]
 }
 
-const VALID_IMAGE_EXTENSIONS: Array[String] = [
-	".png", ".jpg", ".jpeg", ".svg"
-]
+#region Music Paths
+const NO_MUSIC: String = "NO_MUSIC" # This can be used to explicitly specify stopping music to ActionPlayMusic.
+const MUSIC_TITLE_SCREEN_AUDIO_PATH: String = ""
+# Location musics. These are used as final fallbacks when more specific cases are not provided.
+# NOTE: See EventData and ActData for overriding these on a case by case basis.
+# NOTE: See ActionGenerator.generate_location_music()
+# NOTE: use an empty string or NO_MUSIC to play no music.
+const MUSIC_SHOP_AUDIO_PATH: String = NO_MUSIC
+const MUSIC_REST_SITE_AUDIO_PATH: String = NO_MUSIC
+const MUSIC_DEFAULT_AMBIENT_AUDIO_PATH: String = NO_MUSIC # non combat (starting/events/chests) music.
+const MUSIC_DEFAULT_COMBAT_AUDIO_PATH: String = NO_MUSIC # standard combat music
+const MUSIC_DEFAULT_MINIBOSS_AUDIO_PATH: String = NO_MUSIC
+const MUSIC_DEFAULT_BOSS_AUDIO_PATH: String = NO_MUSIC
+#endregion
 
 func _ready():
 	# change the base folder path based on the build type
@@ -60,8 +76,10 @@ func _ready():
 	if not AUTOSAVING_ENABLED:
 		DebugLogger.log_line("FileLoader: Autosaving disabled", Color.RED)
 
+## Given a partial filepath, return the full one, which will change based on the build.
+## Debug will start with res:// while exported builds will use the game's file directory.
+## Methods where is_absolute = true will instead use an absolute file path and skip this method.
 func _get_modified_filepath(partial_filepath: String) -> String:
-	# given a partial filepath, return the full one, which will change based on the build
 	return _EXTERNAL_FILE_PREFIX + partial_filepath
 
 func get_files_in_directory(partial_dir_path: String):
@@ -72,8 +90,47 @@ func get_files_in_directory(partial_dir_path: String):
 	var dir = DirAccess.open(full_path)
 	return dir.get_files()
 
+## Loads and caches an audio from external file
+## Can use an absolute or partial (same directory as code in debug, or directory of exported game) path.
+## Can specify if the audio is meant to loop or not, for .OGG and .MP3 files only.
+func load_audio(audio_partial_path, is_absolute: bool = false, audio_loops: bool = false) -> AudioStream:
+	var full_path: String = audio_partial_path
+	if not is_absolute:
+		full_path = _get_modified_filepath(audio_partial_path)
+	
+	if self._cached_audio.has(full_path):
+		return self._cached_audio[full_path]
+	else:
+		if FileAccess.file_exists(full_path):
+			var audio: AudioStream = null
+			if full_path.ends_with(".wav"):
+				audio = AudioStreamWAV.load_from_file(full_path)
+				audio.loop_mode = AudioStreamWAV.LOOP_DISABLED # looping not supported for .wav
+			if full_path.ends_with(".mp3"):
+				audio = AudioStreamMP3.load_from_file(full_path)
+				audio.loop = audio_loops
+			if full_path.ends_with(".ogg"):
+				audio = AudioStreamOggVorbis.load_from_file(full_path)
+				audio.loop = audio_loops
+			
+			if audio != null:
+				audio.take_over_path(full_path)
+				self._cached_audio[full_path] = audio
+				return audio
+			else:
+				DebugLogger.log_error("Audio failed to load, invalid format?: \"{0}\"".format([full_path]))
+				self._cached_audio[full_path] = MISSING_AUDIO
+				MISSING_AUDIO.take_over_path(full_path)
+				return MISSING_AUDIO	# return a debug audio
+		else:
+			DebugLogger.log_error("Audio failed to load: \"{0}\"".format([full_path]))
+			self._cached_audio[full_path] = MISSING_AUDIO
+			MISSING_AUDIO.take_over_path(full_path)
+			return MISSING_AUDIO	# return a debug audio
+			
+## Loads and caches a texture from external images.
+## Can use an absolute or partial (same directory as code in debug, or directory of exported game) path.
 func load_texture(image_partial_path, is_absolute: bool = false) -> ImageTexture:
-	# loads and caches a texture from external images
 	var full_path: String = image_partial_path
 	if not is_absolute:
 		full_path = _get_modified_filepath(image_partial_path)
@@ -92,27 +149,17 @@ func load_texture(image_partial_path, is_absolute: bool = false) -> ImageTexture
 			self._cached_textures[full_path] = texture
 			return texture
 		else:
-			push_error("Image failed to load: ", full_path)
-			return ImageTexture.new()	# return an empty image
-		
-func load_animation(animation_id: String, animation_data: Dictionary) -> SpriteFrames:
-	# given an animation id and animation data, will generate and cache a SpriteFrames from external images
-	# animation_data is a dictionary of String animation names each mapped to an array of partial image paths
-	# eg {"anim_1": ["frame_1", ...], "anim_2": [...]}
-	if self._cached_animations.has(animation_id):
-		return self._cached_animations[animation_id]
-	else:
-		var animation: SpriteFrames = SpriteFrames.new()
-		for anim_name in animation_data.keys():
-			animation.add_animation(anim_name)
-			
-			var partial_image_paths: Array = animation_data[anim_name]
-			for partial_image_path in partial_image_paths:
-				var texture: ImageTexture = self.load_texture(partial_image_path)
-				animation.add_frame(anim_name, texture)
-		
-		self._cached_animations[animation_id] = animation
-		return animation
+			DebugLogger.log_error("FileLoader.load_texture(): Image failed to load from \"{0}\"".format([full_path]))
+			self._cached_textures[full_path] = MISSING_TEXTURE
+			MISSING_TEXTURE.take_over_path(full_path)
+			return MISSING_TEXTURE	# return an empty image
+
+## Goes through all animation data objects and forcibly regenerates animation data.
+## Used on game start to ensure any file loaded animations are properly generated.
+func generate_all_animations() -> void:
+	for animation_id: String in Global._id_to_animation_data:
+		var animation_data: AnimationData = Global.get_animation_data(animation_id)
+		animation_data.regenerate_animations()
 
 func load_json(directory_partial_path: String, filename: String) -> Dictionary:
 	# loads an external json file
@@ -123,11 +170,11 @@ func load_json(directory_partial_path: String, filename: String) -> Dictionary:
 		var parsed_json = JSON.parse_string(file_text)
 		
 		if parsed_json == null:
-			push_error("JSON failed to parse: ", full_path)
+			DebugLogger.log_error("FileLoader.load_json(): JSON failed to parse: \"{0}\"".format([full_path]))
 			return {}
 		return parsed_json
 	else:
-		push_error("JSON failed to load: ", full_path)
+		DebugLogger.log_error("FileLoader.load_json(): JSON failed to load at path \"{0}\"".format([full_path]))
 		return {}
 
 func save_json(directory_partial_path: String, filename: String, data_dict: Dictionary) -> void:
@@ -171,6 +218,8 @@ func load_read_only_data() -> void:
 		mod_data.set_serializable_properties_from_json_patch(mod_dict_repr)
 		
 		# take over script paths
+		# NOTE: Comment out this section if you want to completely disable
+		# loading scripts from external sources.
 		for mod_script_file_path: String in mod_data.mod_script_file_paths.keys():
 			var full_script_path: String = _get_modified_filepath(mod_script_file_path)
 			var old_script_path: String = mod_data.mod_script_file_paths[mod_script_file_path]
@@ -238,10 +287,10 @@ func _migrate_read_only_data() -> void:
 		var dict_repr: Dictionary = serializeable_data.get_serializable_properties_to_json_patch()
 		save_json(directory, file_name, dict_repr)
 
-## Utility function. Used to export test data that doesn't have an existing source file to external directories,
-## essentially exposing the base game's data pipeline for modification
+## Utility function. Used to export test/production data that doesn't have an existing source file to external directories,
+## essentially exposing the base game's data pipeline for modification.
 ## Only outputs files that were not loaded from anywhere, preserving existing external files.
-func export_test_data() -> void:
+func export_read_only_data() -> void:
 	####### Write Temporary Migration Code Here To Mutate Test Data
 	
 	######
@@ -360,8 +409,10 @@ func save_game(file_dir: String = SAVE_DIR_PATH, file_name: String = SAVE_FILE_N
 	var player_dict: Dictionary = Global.player_data.get_serializable_properties_to_json_patch()
 	save_json(file_dir, file_name, player_dict)
 
-## Takes json file and converts is back into player data
-func load_game(file_dir: String = SAVE_DIR_PATH, file_name: String = SAVE_FILE_NAME) -> void:
+## Takes json file and converts it back into player data
+## start_game automatically continues the run rather than simply load into memory. false used to load
+## the game and forfeit it.
+func load_game(start_game: bool = true, file_dir: String = SAVE_DIR_PATH, file_name: String = SAVE_FILE_NAME) -> void:
 	if not has_save_file():
 		DebugLogger.log_error("No save file found")
 	else:
@@ -374,10 +425,12 @@ func load_game(file_dir: String = SAVE_DIR_PATH, file_name: String = SAVE_FILE_N
 		Global.player_data = player_data
 		Global.is_run = true
 		player_data.init()
+		StatsHandler.current_run_stats = player_data.player_run_stats # update reference
 		
-		# simulate the run starting and visiting the player's location
-		Signals.run_started.emit()
-		Signals.map_location_selected.emit(Global.get_player_location_data())
+		if start_game:
+			# simulate the run starting and visiting the player's location
+			Signals.run_started.emit()
+			Signals.map_location_selected.emit(Global.get_player_location_data())
 
 ## Wrapper for saving the game. It automatically determines the file name
 ## TODO: Profile implementation

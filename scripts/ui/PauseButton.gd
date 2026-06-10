@@ -11,7 +11,14 @@ func _ready() -> void:
 	Signals.game_unpaused.connect(_on_game_unpaused)
 	
 func _on_pause_button_pressed() -> void:
-	Global.pause_game()
+	if Global.is_run:
+		# can only pause game if player is not dead during a run, preventing save scumming
+		# and overlapping with run summary screen
+		if Global.player_data.player_health > 0:
+			Global.pause_game()
+	else:
+		# can pause game and "leave" if for some reason accessed not during a run
+		Global.pause_game()
 
 func _on_game_paused() -> void:
 	if _is_game_pausable():

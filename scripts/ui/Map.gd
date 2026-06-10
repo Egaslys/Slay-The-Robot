@@ -18,6 +18,7 @@ func _ready():
 	Signals.combat_started.connect(_on_combat_started)
 	Signals.combat_ended.connect(_on_combat_ended)
 	
+	Signals.player_killed.connect(_on_player_killed)
 	Signals.dialogue_ended.connect(_on_dialogue_ended)
 	
 	Signals.chest_opened.connect(_on_chest_opened)
@@ -88,7 +89,7 @@ func _on_map_location_button_up(map_location: MapLocation):
 		# must be adjacent to player location
 		if Global.get_next_locations().has(map_location.location_data):
 			# visit the location
-			ActionGenerator.generate_visit_location(map_location.location_data.location_id)
+			ActionGenerator.generate_visition_location(map_location.location_data.location_id)
 	
 func _on_map_location_selected(location_data: LocationData):
 	# disable travel mode
@@ -100,6 +101,10 @@ func _on_combat_started(_event_id: String):
 
 func _on_combat_ended():
 	can_travel = true
+
+func _on_player_killed(_player: Player) -> void:
+	hide_map()
+	clear_locations()
 
 func _on_chest_opened():
 	can_travel = true

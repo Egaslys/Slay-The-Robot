@@ -1,9 +1,9 @@
-[gd_scene load_steps=48 format=3 uid="uid://bg7gmq537qyn5"]
+[gd_scene load_steps=68 format=3 uid="uid://bg7gmq537qyn5"]
 
 [ext_resource type="Script" uid="uid://ckfi22o2jit0b" path="res://scripts/Root.gd" id="1_ak6de"]
 [ext_resource type="Theme" uid="uid://cd5rw86bhiyn" path="res://themes/title_screen_theme.tres" id="2_bi5lp"]
 [ext_resource type="Script" uid="uid://dw0xyfu580mkb" path="res://scripts/ui/menus/TitleScreen.gd" id="2_m6atk"]
-[ext_resource type="Texture2D" uid="uid://nh32y87hcke5" path="res://icon.svg" id="3_8ax2e"]
+[ext_resource type="Texture2D" uid="uid://d33u8m744fh03" path="res://icon.svg" id="3_8ax2e"]
 [ext_resource type="Script" uid="uid://dao05mln2rw4g" path="res://scripts/ui/Combat.gd" id="3_h4evn"]
 [ext_resource type="Script" uid="uid://cg1kj2nrg24jw" path="res://scripts/ui/menus/MainMenu.gd" id="3_jd5n0"]
 [ext_resource type="Script" uid="uid://dlwowe1wugkh4" path="res://scripts/ui/Hand.gd" id="4_i2yfj"]
@@ -11,49 +11,51 @@
 [ext_resource type="PackedScene" uid="uid://c0sxkaemtqb5x" path="res://scenes/combatants/Player.tscn" id="5_7crh0"]
 [ext_resource type="Script" uid="uid://c4twsg7v4ky8u" path="res://scripts/ui/menus/NewRunMenu.gd" id="5_878fa"]
 [ext_resource type="Script" uid="uid://cedacrx3ip1sl" path="res://scripts/ui/ArtifactContainer.gd" id="5_a7j3r"]
-[ext_resource type="Script" uid="uid://chcjmcum7dbn7" path="res://scripts/ui/CharacterButtonContainer.gd" id="6_2ahpg"]
-[ext_resource type="Script" uid="uid://djp4k7pq27a7e" path="res://scripts/ui/CustomRunModifierButtonContainer.gd" id="8_nlp47"]
+[ext_resource type="Script" uid="uid://csw1vv4b1hbnb" path="res://addons/label_font_auto_sizer/label_auto_sizer.gd" id="8_lhx3c"]
+[ext_resource type="Shortcut" uid="uid://d3saxt3nuwqbg" path="res://shortcuts/esc_shortcut.tres" id="8_xur7f"]
 [ext_resource type="Script" uid="uid://cu62o32eaklx7" path="res://scripts/ui/TurnOverlay.gd" id="9_u2w0b"]
 [ext_resource type="Script" uid="uid://dgls5w4w7ym84" path="res://scripts/ui/menus/CodexMenu.gd" id="9_uxrgu"]
 [ext_resource type="Script" uid="uid://brwptyvf1yacl" path="res://scripts/ui/CardSelectionOverlay.gd" id="10_bwtvr"]
+[ext_resource type="Script" uid="uid://nkhf5a8dd47j" path="res://ui/components/resizing_grid_scroll_container/ResizingGridScrollContainer.gd" id="10_kpmo0"]
 [ext_resource type="Script" uid="uid://ejl2op54o7aw" path="res://scripts/ui/RewardOverlay.gd" id="10_u2l48"]
 [ext_resource type="Script" uid="uid://b8gg8exxeg26k" path="res://scripts/ui/Chest.gd" id="11_1uvyw"]
 [ext_resource type="Script" uid="uid://b5htysy0x53ab" path="res://scripts/ui/Consumables.gd" id="11_c46y0"]
+[ext_resource type="PackedScene" uid="uid://b7itoxbnyegis" path="res://scenes/ui/codex/CodexCardPackButton.tscn" id="11_kw7ld"]
+[ext_resource type="Script" uid="uid://dj8cttlgi1fow" path="res://scripts/ui/codex/CodexCardsMenu.gd" id="11_nownq"]
 [ext_resource type="Script" uid="uid://bepy2gle06uwf" path="res://scripts/ui/CardDraftSelectionOverlay.gd" id="11_yys3c"]
 [ext_resource type="Script" uid="uid://dm6o2678kafwr" path="res://scripts/ui/menus/RunScreen.gd" id="12_elxq6"]
 [ext_resource type="Script" uid="uid://c2i6b2ert5jls" path="res://scripts/ui/PauseButton.gd" id="13_i7igs"]
 [ext_resource type="Script" uid="uid://cdp0fx5l64nnt" path="res://scripts/ui/Shop.gd" id="13_w8i8k"]
+[ext_resource type="PackedScene" uid="uid://btxmfagad05n5" path="res://scenes/ui/card/Card.tscn" id="14_dohly"]
 [ext_resource type="Script" uid="uid://dnvcyccyhfcmu" path="res://scripts/ui/Map.gd" id="14_fc5ht"]
 [ext_resource type="Script" uid="uid://b2hl2ln4jm0mj" path="res://scripts/ui/RestOverlay.gd" id="14_k6wys"]
+[ext_resource type="Script" uid="uid://d3t6454beu1nk" path="res://scripts/ui/codex/CodexArtifactMenu.gd" id="15_51fbl"]
+[ext_resource type="PackedScene" uid="uid://bryngcqxi50q" path="res://scenes/ui/codex/CodexArtifact.tscn" id="15_u5j4q"]
+[ext_resource type="Script" uid="uid://drtgykrsojqep" path="res://scripts/ui/menus/SettingsMenu.gd" id="17_giapx"]
 [ext_resource type="Script" uid="uid://cw6tfwitjoo0i" path="res://scripts/ui/ShopOverlay.gd" id="17_stqr4"]
+[ext_resource type="Script" uid="uid://bwx7uuvrugqlu" path="res://scripts/ui/codex/CodexConsumablesMenu.gd" id="18_4u6xb"]
+[ext_resource type="PackedScene" uid="uid://cftk22jibfvcc" path="res://ui/components/volume_slider/VolumeSlider.tscn" id="18_plfau"]
+[ext_resource type="PackedScene" uid="uid://ccwweknxxvks" path="res://scenes/ui/codex/CodexConsumable.tscn" id="19_o7n0g"]
+[ext_resource type="Script" uid="uid://bydljvbv1j5j3" path="res://scripts/ui/codex/CodexEnemiesMenu.gd" id="20_jsyke"]
 [ext_resource type="Script" uid="uid://pk2e8kasw6rr" path="res://scripts/ui/RunSummaryOverlay.gd" id="21_fj66g"]
+[ext_resource type="PackedScene" uid="uid://c3p3waeyddith" path="res://scenes/ui/codex/CodexActNameLabel.tscn" id="22_gs3rm"]
+[ext_resource type="PackedScene" uid="uid://crgv8ihu0ojrw" path="res://scenes/ui/codex/CodexEnemyButton.tscn" id="23_bl3tx"]
+[ext_resource type="PackedScene" uid="uid://c75lxyqfus0oq" path="res://scenes/ui/codex/CodexEnemyIntent.tscn" id="24_gs3rm"]
+[ext_resource type="Script" uid="uid://dpp50xgqbdrrn" path="res://scripts/ui/menus/RunHistoryMenu.gd" id="25_bl3tx"]
 [ext_resource type="Script" uid="uid://s7lqf6p66yti" path="res://scripts/ui/RunStartOptions.gd" id="25_ll3o0"]
 [ext_resource type="Script" uid="uid://b2t515tpjrija" path="res://addons/smooth_scroll_container/SmoothScrollContainer.gd" id="25_t3i5t"]
 [ext_resource type="Script" uid="uid://ci6oby4hmnfg6" path="res://scripts/ui/DialogueOverlay.gd" id="25_tn5yy"]
+[ext_resource type="Script" uid="uid://dft4xbh3vmt3m" path="res://scripts/ui/menus/ProfileStatsMenu.gd" id="25_yjgj2"]
 [ext_resource type="Script" uid="uid://b3nvcsku8u75w" path="res://addons/smooth_scroll_container/scroll_damper/expo_scroll_damper.gd" id="26_08sam"]
+[ext_resource type="StyleBox" uid="uid://605w3novehok" path="res://themes/panel_theme.tres" id="26_yjgj2"]
+[ext_resource type="PackedScene" uid="uid://dk0ka4eceu1y5" path="res://scenes/ui/profile/CharacterStat.tscn" id="27_edqbv"]
+[ext_resource type="PackedScene" uid="uid://cvury56p7bbe8" path="res://scenes/ui/run_summary/RunHistoryCard.tscn" id="29_edqbv"]
 [ext_resource type="Script" uid="uid://6xsavir53fvp" path="res://scripts/ui/PauseOverlay.gd" id="29_p8axl"]
-
-[sub_resource type="Resource" id="Resource_i7igs"]
-script = ExtResource("26_08sam")
-friction = 10.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-metadata/_custom_type_script = "uid://b3nvcsku8u75w"
-
-[sub_resource type="Resource" id="Resource_elxq6"]
-script = ExtResource("26_08sam")
-friction = 4.0
-minimum_velocity = 0.4
-rebound_strength = 7.0
-metadata/_custom_type_script = "uid://b3nvcsku8u75w"
-
-[sub_resource type="InputEventKey" id="InputEventKey_p8axl"]
-device = -1
-pressed = true
-keycode = 4194305
-
-[sub_resource type="Shortcut" id="Shortcut_i7igs"]
-events = [SubResource("InputEventKey_p8axl")]
+[ext_resource type="Script" uid="uid://cwt4a5keff86t" path="res://scripts/ui/RunTimer.gd" id="30_plfau"]
+[ext_resource type="Script" uid="uid://cv2h3ccb6uytr" path="res://scripts/ui/Tooltips.gd" id="40_wtekq"]
+[ext_resource type="Theme" uid="uid://2714jm71pkv4" path="res://themes/keyword_tooltip_theme.tres" id="41_0h1ar"]
+[ext_resource type="Script" uid="uid://d2fxhtmdfmtdf" path="res://scripts/ui/general/KeywordContainer.gd" id="42_wtekq"]
+[ext_resource type="Script" uid="uid://c5i0sjwlko88l" path="res://addons/label_font_auto_sizer/rich_label_auto_sizer.gd" id="43_gs3rm"]
 
 [sub_resource type="Animation" id="Animation_m5prp"]
 resource_name = "end_turn"
@@ -207,51 +209,72 @@ location = 1
 [sub_resource type="Shortcut" id="Shortcut_elxq6"]
 events = [SubResource("InputEventKey_i7igs")]
 
-[node name="Root" type="Node2D"]
+[node name="Root" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_ak6de")
 
 [node name="TitleScreen" type="Control" parent="."]
 unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2_m6atk")
 metadata/_edit_lock_ = true
 
 [node name="Background" type="ColorRect" parent="TitleScreen"]
-layout_mode = 0
-offset_right = 1200.0
-offset_bottom = 700.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.202309, 0.187588, 0.216973, 1)
 
-[node name="MainMenu" type="Control" parent="TitleScreen"]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="MainMenu" type="Control" parent="TitleScreen" node_paths=PackedStringArray("navigation_button_to_menu")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_jd5n0")
+navigation_button_to_menu = {
+NodePath("VBoxContainer/NewRunButton"): NodePath("../NewRunMenu"),
+NodePath("VBoxContainer/CodexButton"): NodePath("../CodexMenu"),
+NodePath("VBoxContainer/RunHistoryButton"): NodePath("../RunHistoryMenu"),
+NodePath("VBoxContainer/SettingsButton"): NodePath("../SettingsMenu"),
+NodePath("VBoxContainer/ProfileStatsButton"): NodePath("../ProfileStatsMenu")
+}
 
 [node name="Label" type="Label" parent="TitleScreen/MainMenu"]
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.0414286
 anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_top = 27.3429
-offset_right = 1160.0
-offset_bottom = 93.0286
+offset_top = 16.0
+offset_bottom = 67.0
 grow_horizontal = 2
 theme = ExtResource("2_bi5lp")
 text = "Slay the Robot"
 horizontal_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/MainMenu"]
-layout_mode = 0
-offset_left = 27.0
-offset_top = 514.0
-offset_right = 420.0
-offset_bottom = 677.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = -284.0
+offset_right = 409.0
+grow_vertical = 0
 
 [node name="ContinueButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
 visible = false
@@ -266,355 +289,1416 @@ theme = ExtResource("2_bi5lp")
 text = "Forfeit Run"
 
 [node name="NewRunButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_bi5lp")
 text = "New Game"
+
+[node name="SettingsButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bi5lp")
+text = "Settings"
 
 [node name="CodexButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_bi5lp")
 text = "Codex"
 
-[node name="SettingsButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
+[node name="ProfileStatsButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("2_bi5lp")
-disabled = true
-text = "Settings"
+text = "Character Stats"
 
-[node name="ExitButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
+[node name="RunHistoryButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bi5lp")
+text = "Run History"
+
+[node name="ExitGameButton" type="Button" parent="TitleScreen/MainMenu/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_bi5lp")
 text = "Exit"
 
-[node name="NewRunMenu" type="Control" parent="TitleScreen"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="TitleScreen/MainMenu"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 104.0
+offset_right = 256.0
+offset_bottom = 176.0
+
+[node name="LinkButton" type="LinkButton" parent="TitleScreen/MainMenu/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Project Wiki and Tutorials"
+uri = "https://github.com/DesirePathGames/Slay-The-Robot/wiki"
+
+[node name="LinkButton2" type="LinkButton" parent="TitleScreen/MainMenu/VBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Support the Creator"
+uri = "https://buymeacoffee.com/desirepathgames"
+
+[node name="NewRunMenu" type="Control" parent="TitleScreen" node_paths=PackedStringArray("navigation_button_to_menu")]
 visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("5_878fa")
+navigation_button_to_menu = {
+NodePath("StartRun/VBoxContainer/MainMenuButton"): NodePath("../MainMenu")
+}
 
 [node name="Label" type="Label" parent="TitleScreen/NewRunMenu"]
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.0414286
 anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_top = 27.3429
-offset_right = 1160.0
-offset_bottom = 93.0286
+offset_top = 16.0
+offset_bottom = 67.0
 grow_horizontal = 2
 theme = ExtResource("2_bi5lp")
 text = "New Run"
 horizontal_alignment = 1
 
-[node name="CharacterNameLabel" type="Label" parent="TitleScreen/NewRunMenu"]
-layout_direction = 2
+[node name="CharacterSelect" type="Control" parent="TitleScreen/NewRunMenu"]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 56.0
-offset_top = 126.343
-offset_right = 205.0
-offset_bottom = 159.029
-grow_horizontal = 2
-theme = ExtResource("2_bi5lp")
-theme_override_font_sizes/font_size = 24
-text = "Character Name"
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_top = 96.0
+offset_right = 368.0
+grow_vertical = 2
 
-[node name="CharacterHealthLabel" type="Label" parent="TitleScreen/NewRunMenu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/CharacterSelect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CharacterNameLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer"]
+unique_name_in_owner = true
+layout_direction = 2
+layout_mode = 2
+theme = ExtResource("2_bi5lp")
+theme_override_font_sizes/font_size = 36
+text = "Character Name"
+horizontal_alignment = 1
+
+[node name="Control" type="Control" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+
+[node name="CharacterHealthLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control"]
+unique_name_in_owner = true
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 56.0
-offset_top = 166.343
-offset_right = 80.0
-offset_bottom = 199.029
-grow_horizontal = 2
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 32.0
+offset_top = -12.0
+offset_right = 160.0
+offset_bottom = 12.0
+grow_vertical = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 17
 text = "HP: "
 vertical_alignment = 1
 
-[node name="CharacterMoneyLabel" type="Label" parent="TitleScreen/NewRunMenu"]
+[node name="CharacterMoneyLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control"]
+unique_name_in_owner = true
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 184.0
-offset_top = 166.343
-offset_right = 208.0
-offset_bottom = 199.029
-grow_horizontal = 2
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 120.0
+offset_top = -12.0
+offset_right = 323.0
+offset_bottom = 12.0
+grow_vertical = 2
 theme = ExtResource("2_bi5lp")
 theme_override_font_sizes/font_size = 17
 text = "Money:"
 
-[node name="CharacterDescriptionLabel" type="Label" parent="TitleScreen/NewRunMenu"]
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="CharacterDescriptionLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 64)
 layout_direction = 2
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 56.0
-offset_top = 214.343
-offset_right = 328.0
-offset_bottom = 309.029
-grow_horizontal = 2
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Character Description"
+autowrap_mode = 2
 
-[node name="CharacterArtifactTextureRect" type="TextureRect" parent="TitleScreen/NewRunMenu"]
+[node name="Control2" type="Control" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="CharacterArtifactTextureRect" type="TextureRect" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control2"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(64, 64)
-layout_mode = 0
-offset_left = 56.0
-offset_top = 320.0
-offset_right = 120.0
-offset_bottom = 384.0
+layout_mode = 1
+offset_left = 16.0
+offset_top = 10.0
+offset_right = 80.0
+offset_bottom = 74.0
 texture = ExtResource("3_8ax2e")
 expand_mode = 1
 
-[node name="CharacterArtifactNameLabel" type="Label" parent="TitleScreen/NewRunMenu"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control2"]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 10.0
+offset_right = 360.0
+offset_bottom = 178.0
+
+[node name="CharacterArtifactNameLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control2/VBoxContainer"]
+unique_name_in_owner = true
 layout_direction = 2
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 128.0
-offset_top = 318.343
-offset_right = 352.0
-offset_bottom = 349.029
-grow_horizontal = 2
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Artifact Name"
 clip_text = true
 
-[node name="CharacterArtifactDescriptionLabel" type="Label" parent="TitleScreen/NewRunMenu"]
+[node name="CharacterArtifactDescriptionLabel" type="Label" parent="TitleScreen/NewRunMenu/CharacterSelect/VBoxContainer/Control2/VBoxContainer"]
+unique_name_in_owner = true
 layout_direction = 2
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 128.0
-offset_top = 350.343
-offset_right = 320.0
-offset_bottom = 461.029
-grow_horizontal = 2
+layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "Description "
 autowrap_mode = 2
 
-[node name="DifficultySelect" type="Control" parent="TitleScreen/NewRunMenu"]
-anchors_preset = 0
-offset_left = 64.0
-offset_top = 504.0
-offset_right = 336.0
-offset_bottom = 544.0
+[node name="StartRun" type="Control" parent="TitleScreen/NewRunMenu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -216.0
+offset_top = -204.0
+offset_right = 216.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
 
-[node name="DecreaseDifficultyButton" type="Button" parent="TitleScreen/NewRunMenu/DifficultySelect"]
-layout_mode = 0
-offset_top = 8.0
-offset_right = 64.0
-offset_bottom = 40.0
-text = "<--"
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/StartRun"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+alignment = 2
 
-[node name="DifficultyLabel" type="Label" parent="TitleScreen/NewRunMenu/DifficultySelect"]
+[node name="SeedSelect" type="Control" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="SeedVisibilityToggle" type="Button" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/SeedSelect"]
+unique_name_in_owner = true
 layout_direction = 2
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 72.0
-offset_top = 6.34286
-offset_right = -72.0
-offset_bottom = 37.0286
+anchor_bottom = 1.0
+offset_right = -352.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_bi5lp")
+theme_override_font_sizes/font_size = 24
+toggle_mode = true
+text = "Seed"
+
+[node name="SeedInput" type="LineEdit" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/SeedSelect"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = -35.0
+offset_bottom = -4.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "1234567890123456"
+alignment = 1
+max_length = 16
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_right = 16
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="CharacterButtonContainer" type="GridContainer" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 4
+
+[node name="DifficultySelect" type="Control" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="DecreaseDifficultyButton" type="Button" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/DifficultySelect"]
+unique_name_in_owner = true
+layout_mode = 1
+offset_right = 64.0
+offset_bottom = 32.0
+text = "<--"
+
+[node name="DifficultyLabel" type="Label" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/DifficultySelect"]
+unique_name_in_owner = true
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -144.0
+offset_right = 144.0
+offset_bottom = 31.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 16
 text = "Difficulty 0"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 clip_text = true
+script = ExtResource("8_lhx3c")
+_max_size = 16
+_current_font_size = 16
+_editor_defaults_set = true
 
-[node name="IncreaseDifficultyButton" type="Button" parent="TitleScreen/NewRunMenu/DifficultySelect"]
-layout_mode = 0
-offset_left = 208.0
-offset_top = 8.0
-offset_right = 272.0
-offset_bottom = 39.0
+[node name="IncreaseDifficultyButton" type="Button" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer/DifficultySelect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_bottom = 31.0
+grow_horizontal = 0
 text = "-->"
 
-[node name="CharacterButtonContainer" type="ScrollContainer" parent="TitleScreen/NewRunMenu"]
-layout_mode = 0
-offset_left = 56.0
-offset_top = 552.0
-offset_right = 344.0
-offset_bottom = 688.0
-script = ExtResource("6_2ahpg")
-
-[node name="GridContainer" type="GridContainer" parent="TitleScreen/NewRunMenu/CharacterButtonContainer"]
+[node name="StartRunButton" type="Button" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-columns = 4
+theme = ExtResource("2_bi5lp")
+text = "Start Run"
 
-[node name="CustomRunModifierButtonContainer" type="ScrollContainer" parent="TitleScreen/NewRunMenu"]
-layout_mode = 0
-offset_left = 824.0
-offset_top = 168.0
-offset_right = 1168.0
-offset_bottom = 680.0
-script = ExtResource("8_nlp47")
+[node name="MainMenuButton" type="Button" parent="TitleScreen/NewRunMenu/StartRun/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_bi5lp")
+shortcut = ExtResource("8_xur7f")
+shortcut_feedback = false
+shortcut_in_tooltip = false
+text = "Back"
 
-[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/NewRunMenu/CustomRunModifierButtonContainer"]
+[node name="CustomModifiers" type="Control" parent="TitleScreen/NewRunMenu"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -344.0
+offset_top = 96.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/CustomModifiers"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TitleScreen/NewRunMenu/CustomModifiers/VBoxContainer"]
+layout_direction = 2
+layout_mode = 2
+theme = ExtResource("2_bi5lp")
+theme_override_font_sizes/font_size = 32
+text = "Custom Modifiers"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TitleScreen/NewRunMenu/CustomModifiers/VBoxContainer"]
+custom_minimum_size = Vector2(41.25, 400)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/NewRunMenu/CustomModifiers/VBoxContainer/ScrollContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 3
 theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
 theme_override_constants/margin_bottom = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/CustomRunModifierButtonContainer/MarginContainer"]
+[node name="CustomRunModifierButtonContainer" type="VBoxContainer" parent="TitleScreen/NewRunMenu/CustomModifiers/VBoxContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="TitleScreen/NewRunMenu"]
-layout_direction = 2
+[node name="SettingsMenu" type="Control" parent="TitleScreen" node_paths=PackedStringArray("navigation_button_to_menu")]
+visible = false
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 400.0
-offset_top = 550.343
-offset_right = 424.0
-offset_bottom = 583.029
+anchor_bottom = 1.0
 grow_horizontal = 2
-theme = ExtResource("2_bi5lp")
-theme_override_font_sizes/font_size = 24
-text = "Seed"
-vertical_alignment = 1
+grow_vertical = 2
+script = ExtResource("17_giapx")
+navigation_button_to_menu = {
+NodePath("MainMenuButton"): NodePath("../MainMenu")
+}
 
-[node name="Label4" type="Label" parent="TitleScreen/NewRunMenu"]
-layout_direction = 2
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.0414286
-anchor_right = 1.0
-anchor_bottom = 0.0742857
-offset_left = 824.0
-offset_top = 126.343
-offset_right = 1128.0
-offset_bottom = 159.029
-grow_horizontal = 2
-theme = ExtResource("2_bi5lp")
-theme_override_font_sizes/font_size = 24
-text = "Custom Modifiers"
-horizontal_alignment = 1
-
-[node name="SeedInput" type="LineEdit" parent="TitleScreen/NewRunMenu"]
+[node name="MainMenuButton" type="Button" parent="TitleScreen/SettingsMenu"]
 layout_mode = 0
-offset_left = 472.0
-offset_top = 552.0
-offset_right = 784.0
-offset_bottom = 584.0
-text = "1234567890123456"
-alignment = 1
-max_length = 16
-
-[node name="StartRunButton" type="Button" parent="TitleScreen/NewRunMenu"]
-layout_mode = 2
-offset_left = 392.0
-offset_top = 600.0
-offset_right = 785.0
-offset_bottom = 634.0
-theme = ExtResource("2_bi5lp")
-text = "Start Run"
-
-[node name="BackButton" type="Button" parent="TitleScreen/NewRunMenu"]
-layout_mode = 2
-offset_left = 392.0
-offset_top = 648.0
-offset_right = 785.0
-offset_bottom = 682.0
-theme = ExtResource("2_bi5lp")
+offset_left = 56.0
+offset_top = 96.0
+offset_right = 160.0
+offset_bottom = 152.0
 text = "Back"
 
-[node name="CodexMenu" type="Control" parent="TitleScreen"]
-visible = false
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-script = ExtResource("9_uxrgu")
-
-[node name="ScrollContainer" type="ScrollContainer" parent="TitleScreen/CodexMenu"]
+[node name="MuteBackgroundCheckButton" type="CheckButton" parent="TitleScreen/SettingsMenu"]
+unique_name_in_owner = true
 layout_mode = 0
-offset_left = 152.0
-offset_top = 24.0
-offset_right = 1176.0
-offset_bottom = 632.0
+offset_left = 216.0
+offset_top = 104.0
+offset_right = 696.0
+offset_bottom = 152.0
+text = "Mute in Background"
+
+[node name="Label" type="Label" parent="TitleScreen/SettingsMenu"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 168.0
+offset_right = 328.0
+offset_bottom = 240.0
+text = "Master"
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="TitleScreen/SettingsMenu"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 256.0
+offset_right = 328.0
+offset_bottom = 328.0
+text = "Music"
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="TitleScreen/SettingsMenu"]
+layout_mode = 0
+offset_left = 224.0
+offset_top = 344.0
+offset_right = 328.0
+offset_bottom = 416.0
+text = "Effects"
+vertical_alignment = 1
+
+[node name="MasterVolumeSlider" parent="TitleScreen/SettingsMenu" instance=ExtResource("18_plfau")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 344.0
+offset_top = 168.0
+offset_right = 696.0
+offset_bottom = 240.0
+max_value = 1.0
+step = 0.1
+rounded = false
+
+[node name="MusicVolumeSlider" parent="TitleScreen/SettingsMenu" instance=ExtResource("18_plfau")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 344.0
+offset_top = 256.0
+offset_right = 696.0
+offset_bottom = 328.0
+max_value = 1.0
+step = 0.1
+rounded = false
+
+[node name="EffectsVolumeSlider" parent="TitleScreen/SettingsMenu" instance=ExtResource("18_plfau")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 344.0
+offset_top = 344.0
+offset_right = 696.0
+offset_bottom = 416.0
+max_value = 1.0
+step = 0.1
+rounded = false
+
+[node name="CodexMenu" type="Control" parent="TitleScreen" node_paths=PackedStringArray("navigation_button_to_menu", "navigation_button_to_sub_menu", "default_sub_menu")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("9_uxrgu")
+navigation_button_to_menu = {
+NodePath("VSplitContainer/VBoxContainer/MarginContainer/MainMenuButton"): NodePath("../MainMenu")
+}
+navigation_button_to_sub_menu = {
+NodePath("VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer/CodexShowCardsButton"): NodePath("VSplitContainer/CodexContentDisplay/CodexCardsMenu"),
+NodePath("VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer2/CodexShowArtifactsButton"): NodePath("VSplitContainer/CodexContentDisplay/CodexArtifactMenu"),
+NodePath("VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer3/CodexShowConsumablesButton"): NodePath("VSplitContainer/CodexContentDisplay/CodexConsumablesMenu"),
+NodePath("VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer4/CodexShowEnemiesButton"): NodePath("VSplitContainer/CodexContentDisplay/CodexEnemiesMenu")
+}
+default_sub_menu = NodePath("VSplitContainer/CodexContentDisplay/CodexCardsMenu")
+
+[node name="VSplitContainer" type="VSplitContainer" parent="TitleScreen/CodexMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+dragging_enabled = false
+dragger_visibility = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/CodexMenu/VSplitContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+
+[node name="MainMenuButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme = ExtResource("2_bi5lp")
+shortcut = ExtResource("8_xur7f")
+shortcut_feedback = false
+shortcut_in_tooltip = false
+text = "Back"
+
+[node name="MarginContainer2" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+
+[node name="VBoxContainer" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.25
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CodexShowCardsButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Cards"
+
+[node name="MarginContainer2" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.25
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CodexShowArtifactsButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Artifacts"
+
+[node name="MarginContainer3" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.75
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CodexShowConsumablesButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Consumables"
+
+[node name="MarginContainer4" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="CodexShowEnemiesButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/VBoxContainer/MarginContainer2/VBoxContainer/MarginContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Enemies"
+
+[node name="CodexContentDisplay" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer"]
+layout_mode = 2
+
+[node name="CodexCardsMenu" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("11_nownq")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer"]
+custom_minimum_size = Vector2(180, 18.205)
+layout_mode = 2
+horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/ScrollContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 16
+
+[node name="CodexCardPackContainer" type="VBoxContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/ScrollContainer/MarginContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodexCardColorButton" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/ScrollContainer/MarginContainer2/CodexCardPackContainer" instance=ExtResource("11_kw7ld")]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="CodexCardRGSC" type="ScrollContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 follow_focus = true
 horizontal_scroll_mode = 3
 vertical_scroll_mode = 3
-script = ExtResource("25_t3i5t")
-wheel_scroll_damper = SubResource("Resource_i7igs")
-dragging_scroll_damper = SubResource("Resource_elxq6")
+script = ExtResource("10_kpmo0")
 follow_focus_margin = 200
 allow_horizontal_scroll = false
 
-[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/MarginContainer/CodexCardRGSC"]
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_bottom = 20
 
-[node name="CodexCardContainer" type="GridContainer" parent="TitleScreen/CodexMenu/ScrollContainer/MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/MarginContainer/CodexCardRGSC/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 16
 theme_override_constants/v_separation = 16
 columns = 6
 
-[node name="BackButton" type="Button" parent="TitleScreen/CodexMenu"]
+[node name="Card" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu/HSplitContainer/MarginContainer/CodexCardRGSC/MarginContainer/GridContainer" instance=ExtResource("14_dohly")]
 layout_mode = 2
-offset_left = 392.0
-offset_top = 648.0
-offset_right = 785.0
-offset_bottom = 682.0
-theme = ExtResource("2_bi5lp")
-text = "Back"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/CodexMenu"]
+[node name="CodexCardRaritySortButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu"]
+unique_name_in_owner = true
 layout_mode = 0
+offset_left = 216.0
+offset_right = 360.0
+offset_bottom = 31.0
+toggle_mode = true
+button_pressed = true
+text = "Rarity"
+
+[node name="CodexCardCostSortButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 536.0
+offset_right = 680.0
+offset_bottom = 31.0
+toggle_mode = true
+button_pressed = true
+text = "Cost"
+
+[node name="CodexCardTypeSortButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 376.0
+offset_right = 520.0
+offset_bottom = 31.0
+toggle_mode = true
+button_pressed = true
+text = "Type"
+
+[node name="CodexCardAlphaSortButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexCardsMenu"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 696.0
+offset_right = 840.0
+offset_bottom = 31.0
+toggle_mode = true
+button_pressed = true
+text = "A - Z"
+
+[node name="CodexArtifactMenu" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("15_51fbl")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexArtifactMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexArtifactMenu/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 170
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 170
+theme_override_constants/margin_bottom = 16
+
+[node name="CodexArtifactRGSC" type="ScrollContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexArtifactMenu/HSplitContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("10_kpmo0")
+follow_focus_margin = 200
+allow_horizontal_scroll = false
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexArtifactMenu/HSplitContainer/MarginContainer/CodexArtifactRGSC"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexArtifactMenu/HSplitContainer/MarginContainer/CodexArtifactRGSC/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 6
+
+[node name="CodexArtifact" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexArtifactMenu/HSplitContainer/MarginContainer/CodexArtifactRGSC/MarginContainer/GridContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexConsumablesMenu" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("18_4u6xb")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexConsumablesMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexConsumablesMenu/HSplitContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 170
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 170
+theme_override_constants/margin_bottom = 16
+
+[node name="CodexConsumableRGSC" type="ScrollContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexConsumablesMenu/HSplitContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+script = ExtResource("10_kpmo0")
+follow_focus_margin = 200
+allow_horizontal_scroll = false
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexConsumablesMenu/HSplitContainer/MarginContainer/CodexConsumableRGSC"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 20
+
+[node name="GridContainer" type="GridContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexConsumablesMenu/HSplitContainer/MarginContainer/CodexConsumableRGSC/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 16
+columns = 6
+
+[node name="CodexConsumable" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexConsumablesMenu/HSplitContainer/MarginContainer/CodexConsumableRGSC/MarginContainer/GridContainer" instance=ExtResource("19_o7n0g")]
+layout_mode = 2
+
+[node name="CodexEnemiesMenu" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("20_jsyke")
+
+[node name="MarginContainer" type="MarginContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HSplitContainer" type="HSplitContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer"]
+layout_mode = 2
+split_offset = 280
+dragging_enabled = false
+
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer"]
+layout_mode = 2
+script = ExtResource("25_t3i5t")
+metadata/_custom_type_script = "uid://b2t515tpjrija"
+
+[node name="CodexActEnemyButtonContainer" type="VBoxContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/SmoothScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(267.24, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodexActNameLabel" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/SmoothScrollContainer/CodexActEnemyButtonContainer" instance=ExtResource("22_gs3rm")]
+layout_mode = 2
+
+[node name="CodexEnemyButton" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/SmoothScrollContainer/CodexActEnemyButtonContainer" instance=ExtResource("23_bl3tx")]
+layout_mode = 2
+
+[node name="HSplitContainer" type="HSplitContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer"]
+layout_mode = 2
+split_offset = 456
+dragging_enabled = false
+
+[node name="EnemyInfo" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer"]
+layout_mode = 2
+
+[node name="CodexEnemyNameLabel" type="Label" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/EnemyInfo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.05
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Enemy Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CodexEnemyIntentsToggleButton" type="Button" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/EnemyInfo/CodexEnemyNameLabel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_bottom = -0.200001
+grow_horizontal = 0
+grow_vertical = 2
+toggle_mode = true
+text = "Intents"
+
+[node name="CodexEnemyTexture" type="TextureRect" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/EnemyInfo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.15
+anchor_right = 1.0
+anchor_bottom = 0.85
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+expand_mode = 1
+stretch_mode = 3
+
+[node name="CodexEnemyHealthLabel" type="Label" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/EnemyInfo"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.85
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "HP: 80 - 90 | 120 - 130 (D2) | 150 - 160 (D3)"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CodexEnemyIntents" type="Control" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/CodexEnemyIntents"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.9
+offset_bottom = 0.400024
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CodexEnemyIntentsContainer" type="VBoxContainer" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/CodexEnemyIntents/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="CodexEnemyIntent" parent="TitleScreen/CodexMenu/VSplitContainer/CodexContentDisplay/CodexEnemiesMenu/MarginContainer/HSplitContainer/HSplitContainer/CodexEnemyIntents/ScrollContainer/CodexEnemyIntentsContainer" instance=ExtResource("24_gs3rm")]
+layout_mode = 2
+
+[node name="ProfileStatsMenu" type="Control" parent="TitleScreen" node_paths=PackedStringArray("navigation_button_to_menu")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("25_yjgj2")
+navigation_button_to_menu = {
+NodePath("MainMenuButton"): NodePath("../MainMenu")
+}
+
+[node name="MainMenuButton" type="Button" parent="TitleScreen/ProfileStatsMenu"]
+layout_mode = 2
 offset_left = 24.0
 offset_top = 88.0
-offset_right = 136.0
-offset_bottom = 584.0
+offset_right = 168.0
+offset_bottom = 136.0
+text = "Back"
 
-[node name="Button" type="Button" parent="TitleScreen/CodexMenu/VBoxContainer"]
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="TitleScreen/ProfileStatsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 184.0
+offset_top = 48.0
+offset_right = -80.0
+offset_bottom = -28.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("25_t3i5t")
+metadata/_custom_type_script = "uid://b2t515tpjrija"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer"]
+custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Label" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Profile Stats"
+horizontal_alignment = 1
+
+[node name="ProfileStats" type="Control" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(600, 120)
+layout_mode = 2
+
+[node name="ColorRect2" type="Panel" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("26_yjgj2")
+
+[node name="CenterContainer" type="CenterContainer" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats"]
+layout_mode = 0
+offset_right = 904.0
+offset_bottom = 118.0
+
+[node name="GridContainer" type="GridContainer" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 32
+columns = 3
+
+[node name="ProfileWinsLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Wins: 0"
+
+[node name="ProfileLossesLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Losses: 0"
+
+[node name="ProfileWinRateLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Win rate: XX.XX%"
+
+[node name="ProfileCurrentWinStreakLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Current Win Streak: 0"
+
+[node name="ProfileHighestWinStreakLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Highest Win Streak: 0"
+
+[node name="ProfilePlayTimeLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Play Time: HHHH:MM:SS"
+
+[node name="ProfileCurrentLossStreakLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Current Loss Streak: 0"
+
+[node name="ProfileHighestLossStreakLabel" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Highest Loss Streak: 0"
+
+[node name="ProfileFastestRunTime" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/ProfileStats/CenterContainer/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Fastest Run: HH:MM:SS"
+
+[node name="Label2" type="Label" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Character Stats"
+horizontal_alignment = 1
+
+[node name="StatContainer" type="GridContainer" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="CharacterStat" parent="TitleScreen/ProfileStatsMenu/SmoothScrollContainer/VBoxContainer/StatContainer" instance=ExtResource("27_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryMenu" type="Control" parent="TitleScreen" node_paths=PackedStringArray("navigation_button_to_menu")]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("25_bl3tx")
+navigation_button_to_menu = {
+NodePath("MainMenuButton"): NodePath("../MainMenu")
+}
+
+[node name="MainMenuButton" type="Button" parent="TitleScreen/RunHistoryMenu"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 64.0
+offset_right = 192.0
+offset_bottom = 128.0
+text = "Back"
+
+[node name="NoRunsLabel" type="Label" parent="TitleScreen/RunHistoryMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "No Runs Found"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RunsExistContainer" type="Control" parent="TitleScreen/RunHistoryMenu"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PreviousRunButton" type="Button" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 0
+offset_left = 208.0
+offset_top = 24.0
+offset_right = 318.0
+offset_bottom = 55.0
+text = "Previous Run"
+
+[node name="RunHistoryCharacterIcon" type="TextureRect" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+offset_left = 328.0
+offset_top = 8.0
+offset_right = 392.0
+offset_bottom = 72.0
+texture = ExtResource("3_8ax2e")
+expand_mode = 1
+
+[node name="RunHistoryDifficultyLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/RunHistoryCharacterIcon"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 32.0
+offset_right = 72.0
+offset_bottom = 72.0
+theme_override_font_sizes/font_size = 24
+text = "10"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NextRunButton" type="Button" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 24.0
+offset_right = 510.0
+offset_bottom = 55.0
+text = "Next Run"
+
+[node name="RunHistoryCharacterNameLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 208.0
+offset_top = 64.0
+offset_right = 792.0
+offset_bottom = 88.0
+text = "Character Name"
+
+[node name="RunHistorySeedLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 536.0
+offset_top = 96.0
+offset_right = 776.0
+offset_bottom = 119.0
+text = "Run Seed"
+
+[node name="RunHistoryCompletionDateLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 536.0
+offset_top = 64.0
+offset_right = 840.0
+offset_bottom = 87.0
+text = "Run Completion Date"
+
+[node name="RunHistoryMessageLabel" type="RichTextLabel" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 208.0
+offset_top = 128.0
+offset_right = 792.0
+offset_bottom = 152.0
+bbcode_enabled = true
+text = "Victory/Death Message"
+scroll_active = false
+
+[node name="RunHistoryHealthLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 536.0
+offset_top = 24.0
+offset_right = 664.0
+offset_bottom = 56.0
+text = "HP: 100/100"
+vertical_alignment = 1
+
+[node name="RunHistoryMoneyLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 648.0
+offset_top = 24.0
+offset_right = 760.0
+offset_bottom = 56.0
+text = "Money: 99999"
+vertical_alignment = 1
+
+[node name="RunHistoryRunTimeLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 208.0
+offset_top = 96.0
+offset_right = 368.0
+offset_bottom = 119.0
+text = "End Time: HH:MM:SS"
+
+[node name="RunHistoryFloorLabel" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 2
+offset_left = 768.0
+offset_top = 24.0
+offset_right = 844.0
+offset_bottom = 56.0
+text = "Floor: 999"
+vertical_alignment = 1
+
+[node name="RunHistoryConsumableContainer" type="HBoxContainer" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 872.0
+offset_top = 16.0
+offset_right = 1184.0
+offset_bottom = 56.0
+
+[node name="CodexConsumable" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/RunHistoryConsumableContainer" instance=ExtResource("19_o7n0g")]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+custom_minimum_size = Vector2(1016, 0)
+layout_mode = 2
+offset_top = 176.0
+offset_right = 1200.0
+offset_bottom = 221.0
+theme_override_font_sizes/font_size = 32
 text = "Cards"
+horizontal_alignment = 1
 
-[node name="Button2" type="Button" parent="TitleScreen/CodexMenu/VBoxContainer"]
-layout_mode = 2
-disabled = true
-text = "Enemies"
+[node name="SmoothScrollContainer" type="ScrollContainer" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.2
+anchor_top = 5.6
+anchor_right = 28.6
+anchor_bottom = 10.0
+script = ExtResource("25_t3i5t")
+metadata/_custom_type_script = "uid://b2t515tpjrija"
+metadata/_edit_use_anchors_ = true
+metadata/_edit_group_ = true
 
-[node name="Button3" type="Button" parent="TitleScreen/CodexMenu/VBoxContainer"]
+[node name="RunHistoryCardContainer" type="GridContainer" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
-disabled = true
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 8
+columns = 5
+
+[node name="RunHistoryCard" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard2" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard3" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard4" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard5" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard6" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard7" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard8" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard9" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard10" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard11" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard12" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard13" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard14" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="RunHistoryCard15" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer/RunHistoryCardContainer" instance=ExtResource("29_edqbv")]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+custom_minimum_size = Vector2(846.67, 0)
+layout_mode = 2
+offset_top = 424.0
+offset_right = 1200.0
+offset_bottom = 469.0
+theme_override_font_sizes/font_size = 32
 text = "Artifacts"
+horizontal_alignment = 1
 
-[node name="Button4" type="Button" parent="TitleScreen/CodexMenu/VBoxContainer"]
+[node name="SmoothScrollContainer2" type="ScrollContainer" parent="TitleScreen/RunHistoryMenu/RunsExistContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 4.0
+anchor_top = 11.8
+anchor_right = 27.0
+anchor_bottom = 14.4
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("25_t3i5t")
+metadata/_custom_type_script = "uid://b2t515tpjrija"
+metadata/_edit_group_ = true
+metadata/_edit_use_anchors_ = true
+
+[node name="RunHistoryArtifactContainer" type="GridContainer" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2"]
+unique_name_in_owner = true
 layout_mode = 2
-disabled = true
-text = "Consumables"
+columns = 20
+
+[node name="CodexArtifact" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact2" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact3" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact4" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact5" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact6" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact7" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact8" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact9" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact10" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact11" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact12" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact13" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact14" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact15" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact16" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact17" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact18" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact19" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact20" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact21" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact22" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact23" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact24" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact25" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
+
+[node name="CodexArtifact26" parent="TitleScreen/RunHistoryMenu/RunsExistContainer/SmoothScrollContainer2/RunHistoryArtifactContainer" instance=ExtResource("15_u5j4q")]
+layout_mode = 2
 
 [node name="RunScreen" type="Control" parent="."]
 visible = false
@@ -639,6 +1723,12 @@ offset_right = 1200.0
 offset_bottom = 700.0
 color = Color(0.202309, 0.187588, 0.216973, 1)
 
+[node name="Background2" type="ColorRect" parent="RunScreen/Combat"]
+layout_mode = 0
+offset_right = 1200.0
+offset_bottom = 64.0
+color = Color(0.135517, 0.124494, 0.146491, 1)
+
 [node name="BackgroundButton" type="TextureButton" parent="RunScreen/Combat"]
 unique_name_in_owner = true
 layout_mode = 1
@@ -658,7 +1748,7 @@ offset_left = 16.0
 offset_top = 8.0
 offset_right = 66.0
 offset_bottom = 58.0
-shortcut = SubResource("Shortcut_i7igs")
+shortcut = ExtResource("8_xur7f")
 shortcut_feedback = false
 shortcut_in_tooltip = false
 texture_normal = ExtResource("3_8ax2e")
@@ -678,6 +1768,7 @@ ignore_texture_size = true
 stretch_mode = 0
 
 [node name="DeckButton" type="TextureButton" parent="RunScreen/Combat"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 128.0
 offset_top = 8.0
@@ -697,6 +1788,7 @@ offset_top = 8.0
 offset_right = -887.0
 offset_bottom = 56.0
 grow_horizontal = 2
+mouse_filter = 1
 theme_override_font_sizes/font_size = 34
 text = "$10000"
 horizontal_alignment = 2
@@ -711,6 +1803,7 @@ offset_top = 8.0
 offset_right = -712.0
 offset_bottom = 56.0
 grow_horizontal = 2
+mouse_filter = 1
 theme_override_font_sizes/font_size = 34
 text = "99/99"
 horizontal_alignment = 2
@@ -718,9 +1811,9 @@ horizontal_alignment = 2
 [node name="ArtifactContainer" type="HBoxContainer" parent="RunScreen/Combat"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 64.0
+offset_top = 72.0
 offset_right = 496.0
-offset_bottom = 104.0
+offset_bottom = 112.0
 mouse_filter = 2
 script = ExtResource("5_a7j3r")
 
@@ -767,6 +1860,7 @@ offset_right = 480.0
 offset_bottom = 48.0
 
 [node name="ConsumableActionDropdown" type="Control" parent="RunScreen/Combat/Consumables"]
+visible = false
 anchors_preset = 0
 offset_top = 56.0
 offset_right = 144.0
@@ -777,25 +1871,79 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = 48.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.278431, 0.278431, 0.278431, 1)
 
 [node name="UseConsumableButton" type="Button" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown"]
-layout_mode = 0
+unique_name_in_owner = true
+layout_mode = 2
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 136.0
-offset_bottom = 39.0
+offset_right = 184.0
+offset_bottom = 40.0
 theme_override_font_sizes/font_size = 16
+expand_icon = true
+
+[node name="HSplitContainer" type="HSplitContainer" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown/UseConsumableButton"]
+layout_mode = 0
+offset_right = 176.0
+offset_bottom = 32.0
+theme_override_constants/separation = -16
+dragging_enabled = false
+
+[node name="ConsumableEnergy" type="Control" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown/UseConsumableButton/HSplitContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+metadata/_edit_group_ = true
+
+[node name="ConsumableEnergyTextureRect" type="TextureRect" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown/UseConsumableButton/HSplitContainer/ConsumableEnergy"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_8ax2e")
+expand_mode = 1
+metadata/_edit_group_ = true
+
+[node name="ConsumableEnergyCostLabel" type="Label" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown/UseConsumableButton/HSplitContainer/ConsumableEnergy/ConsumableEnergyTextureRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UseConsumableLabel" type="Label" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown/UseConsumableButton/HSplitContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 text = "Use"
+horizontal_alignment = 1
+vertical_alignment = 1
+text_overrun_behavior = 4
 
 [node name="DiscardConsumableButton" type="Button" parent="RunScreen/Combat/Consumables/ConsumableActionDropdown"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 48.0
-offset_right = 136.0
+offset_right = 184.0
 offset_bottom = 79.0
 theme_override_font_sizes/font_size = 16
 text = "Discard"
@@ -843,13 +1991,13 @@ text = "Shop"
 horizontal_alignment = 1
 
 [node name="Energy" type="TextureButton" parent="RunScreen/Combat"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 0
 offset_left = 24.0
 offset_top = 560.0
 offset_right = 74.0
 offset_bottom = 610.0
-tooltip_text = "Energy"
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
@@ -865,13 +2013,13 @@ text = "30"
 horizontal_alignment = 1
 
 [node name="DrawPile" type="TextureButton" parent="RunScreen/Combat"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 0
 offset_left = 24.0
 offset_top = 616.0
 offset_right = 74.0
 offset_bottom = 666.0
-tooltip_text = "Draw Pile"
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
@@ -887,13 +2035,13 @@ text = "30"
 horizontal_alignment = 1
 
 [node name="DiscardPile" type="TextureButton" parent="RunScreen/Combat"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 0
 offset_left = 1136.0
 offset_top = 560.0
 offset_right = 1186.0
 offset_bottom = 610.0
-tooltip_text = "Discard Pile"
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
@@ -909,13 +2057,13 @@ text = "30"
 horizontal_alignment = 1
 
 [node name="ExhaustPile" type="TextureButton" parent="RunScreen/Combat"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 0
 offset_left = 1080.0
 offset_top = 560.0
 offset_right = 1130.0
 offset_bottom = 610.0
-tooltip_text = "Exhaust Pile"
 texture_normal = ExtResource("3_8ax2e")
 ignore_texture_size = true
 stretch_mode = 0
@@ -971,6 +2119,15 @@ offset_right = 1048.0
 offset_bottom = 692.0
 script = ExtResource("4_i2yfj")
 
+[node name="CardContainer" type="Control" parent="RunScreen/Combat/Hand"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="HandSizeExceededRect" type="ColorRect" parent="RunScreen/Combat"]
 unique_name_in_owner = true
 visible = false
@@ -983,6 +2140,7 @@ offset_bottom = 692.0
 mouse_filter = 2
 
 [node name="EndTurnButton" type="Button" parent="RunScreen/Combat"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 0
 offset_left = 1080.0
@@ -1043,6 +2201,19 @@ vertical_alignment = 1
 libraries = {
 &"": SubResource("AnimationLibrary_yww7o")
 }
+
+[node name="RunTimer" type="Label" parent="RunScreen/Combat"]
+process_mode = 4
+layout_mode = 0
+offset_left = 1016.0
+offset_top = 8.0
+offset_right = 1186.0
+offset_bottom = 56.0
+theme_override_font_sizes/font_size = 34
+text = "HH:MM:SS"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("30_plfau")
 
 [node name="RestOverlay" type="Control" parent="RunScreen"]
 unique_name_in_owner = true
@@ -1214,13 +2385,24 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
 
+[node name="DialogueNameLabel" type="RichTextLabel" parent="RunScreen/DialogueOverlay"]
+layout_mode = 0
+offset_left = 96.0
+offset_top = 72.0
+offset_right = 544.0
+offset_bottom = 136.0
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="DialogueTextureRect" type="TextureRect" parent="RunScreen/DialogueOverlay"]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
-offset_left = 64.0
-offset_top = 88.0
-offset_right = 592.0
-offset_bottom = 616.0
+offset_left = 88.0
+offset_top = 144.0
+offset_right = 544.0
+offset_bottom = 600.0
 texture = ExtResource("3_8ax2e")
 expand_mode = 1
 
@@ -1282,26 +2464,58 @@ grow_vertical = 2
 color = Color(0.0941176, 0.0862745, 0.101961, 0.67451)
 
 [node name="VictoryLabel" type="Label" parent="RunScreen/RunSummaryOverlay"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 32.0
 offset_top = 64.0
 offset_right = 1168.0
-offset_bottom = 224.0
+offset_bottom = 184.0
 theme_override_font_sizes/font_size = 50
 text = "Victory"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="DefeatLabel" type="Label" parent="RunScreen/RunSummaryOverlay"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 32.0
 offset_top = 64.0
 offset_right = 1168.0
-offset_bottom = 224.0
+offset_bottom = 184.0
 theme_override_font_sizes/font_size = 50
 text = "Defeat"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="EndRunMessageLabel" type="RichTextLabel" parent="RunScreen/RunSummaryOverlay"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 32.0
+offset_top = 203.0
+offset_right = 1168.0
+offset_bottom = 240.0
+bbcode_enabled = true
+text = "Death or Victory Message"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsSummaryAutosizeLabel" type="RichTextLabel" parent="RunScreen/RunSummaryOverlay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -102.0
+offset_bottom = 138.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 16
+scroll_active = false
+script = ExtResource("43_gs3rm")
+_max_size = 16
+_current_font_size = 16
+_editor_defaults_set = true
 
 [node name="EndRunButton" type="Button" parent="RunScreen/RunSummaryOverlay"]
 layout_mode = 0
@@ -1405,10 +2619,10 @@ color = Color(0.203922, 0.188235, 0.215686, 0.631373)
 [node name="BackButton" type="Button" parent="RunScreen/CardSelectionOverlay"]
 visible = false
 layout_mode = 0
-offset_left = 504.0
-offset_top = 40.0
-offset_right = 648.0
-offset_bottom = 71.0
+offset_left = 16.0
+offset_top = 344.0
+offset_right = 160.0
+offset_bottom = 375.0
 text = "<----"
 
 [node name="ConfirmButton" type="Button" parent="RunScreen/CardSelectionOverlay"]
@@ -1621,3 +2835,120 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 text = "Forfeit Run"
+
+[node name="Tooptips" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+z_index = 1000
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("40_wtekq")
+
+[node name="PanelContainer" type="PanelContainer" parent="Tooptips"]
+visible = false
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 37.0
+mouse_filter = 2
+theme = ExtResource("41_0h1ar")
+
+[node name="TooltipLabel" type="RichTextLabel" parent="Tooptips/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("41_0h1ar")
+bbcode_enabled = true
+text = "[color=Orange][Keyword][/color] description here"
+fit_content = true
+scroll_active = false
+
+[node name="KeywordContainer" type="VBoxContainer" parent="Tooptips"]
+visible = false
+self_modulate = Color(0.392157, 0.392157, 0.392157, 1)
+z_index = 20
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 0
+offset_right = 240.0
+offset_bottom = 37.0
+mouse_filter = 2
+theme = ExtResource("41_0h1ar")
+script = ExtResource("42_wtekq")
+
+[node name="TooltipPositions" type="Control" parent="Tooptips"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="TopLeftTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0133333
+anchor_top = 0.0914286
+anchor_right = 0.24
+anchor_bottom = 0.171429
+mouse_filter = 2
+border_width = 5.0
+
+[node name="MoneyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.173333
+anchor_top = 0.0914286
+anchor_right = 0.4
+anchor_bottom = 0.171429
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="HealthTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.333333
+anchor_top = 0.0914286
+anchor_right = 0.56
+anchor_bottom = 0.171429
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="EnergyTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0133333
+anchor_top = 0.72
+anchor_right = 0.24
+anchor_bottom = 0.8
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="DiscardTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.786667
+anchor_top = 0.72
+anchor_right = 0.986667
+anchor_bottom = 0.891429
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ExhaustTooltipPos" type="ReferenceRect" parent="Tooptips/TooltipPositions"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.793333
+anchor_top = 0.697143
+anchor_right = 0.953333
+anchor_bottom = 0.868572
+mouse_filter = 2
+border_width = 5.0
+metadata/_edit_use_anchors_ = true

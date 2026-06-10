@@ -12,6 +12,7 @@ func process_action_interception(action_interceptor_processor: ActionInterceptor
 	
 	var damage_increase_charges: int = parent_combatant.get_status_charges("status_effect_damage_increase")
 	var damage: int = action_interceptor_processor.get_shadowed_action_values("damage", 0)
-	action_interceptor_processor.shadowed_action_values["damage"] = damage + damage_increase_charges
+	var modified_damage: int = damage + damage_increase_charges
+	action_interceptor_processor.set_shadowed_action_values("damage", modified_damage)
 	
 	return ACTION_ACCEPTENCES.CONTINUE

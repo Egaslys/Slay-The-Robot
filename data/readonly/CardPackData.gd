@@ -18,8 +18,15 @@ class_name CardPackData
 ## for packs that use generated cards or statuses.
 @export var exclude_non_standard_types = true
 
-## Additional validators to be used.
-@export var card_pack_validators: Array[Dictionary] = [] # validators required for the action to be clickable
+## Additional validators to be used, the ValidatorCard<X> ones. Cards must pass all validators to
+## be considered for use in the card pack.
+@export var card_pack_validators: Array[Dictionary] = []
+
+## This is used to make the card pack display as a selectable option in the codex. This should only
+## be done for "top level" card packs representing a color/character's entire card pool.
+## If true, card_pack_color_id should be defined as well.
+@export var card_pack_displays_in_codex: bool = false
+
 
 ## Creates a card filter using this card pack
 func create_card_pack_card_filter() -> CardFilter:

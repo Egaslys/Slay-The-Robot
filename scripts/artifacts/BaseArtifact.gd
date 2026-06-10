@@ -33,6 +33,12 @@ func right_click_artifact() -> void:
 		if len(artifact_data.artifact_right_click_actions) > 0:
 			artifact_data.perform_artifact_actions(artifact_data.artifact_right_click_actions)
 
+## Optional Override.
+## Typically used to provide additonal information for an artifact in addition to the standard
+## description, for use in Tooltips.
+func get_artifact_description() -> String:
+	return artifact_data.artifact_description # + "other text"
+
 func _on_combat_ended() -> void:
 	# reset counter
 	if artifact_data.artifact_counter_reset_on_combat_end >= 0:
@@ -45,7 +51,7 @@ func _on_player_turn_started() -> void:
 	if artifact_data.artifact_counter_reset_on_turn_start >= 0:
 		artifact_data.set_artifact_counter(artifact_data.artifact_counter_reset_on_turn_start)
 	# first turn actions
-	if Global.get_combat_stats().turn_count == 1:
+	if StatsHandler.get_turn_count() == 1:
 		artifact_data.perform_artifact_actions(artifact_data.artifact_first_turn_actions)
 	# normal start of turn actions
 	artifact_data.perform_artifact_actions(artifact_data.artifact_turn_start_actions)

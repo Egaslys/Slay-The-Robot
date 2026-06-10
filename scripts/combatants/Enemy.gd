@@ -1,12 +1,30 @@
 extends BaseCombatant
 class_name Enemy
 
-@onready var enemy_intent: Control = $Visible/Intent
-@onready var enemy_intent_amount_text: Label = $Visible/Intent/IntentAmount
+@onready var enemy_intent: HBoxContainer = $Visible/Intent
 
-@onready var name_label = $Visible/Sprite/NameLabel
+# icons used for displaying specific intent types
+@onready var attacking_intent: TextureRect = $Visible/Intent/AttackingIntent
+@onready var blocking_intent: TextureRect = $Visible/Intent/BlockingIntent
+@onready var debuffing_intent: TextureRect = $Visible/Intent/DebuffingIntent
+@onready var buffing_intent: TextureRect = $Visible/Intent/BuffingIntent
+@onready var summoning_intent: TextureRect = $Visible/Intent/SummoningIntent
 
-var enemy_data: EnemyData
+# maps the EnemyIntentData.enemy_intent_display_type to the texture to display
+@onready var INTENT_DISPLAY_TYPE_TO_INTENT: Dictionary[int, TextureRect] = {
+	EnemyIntentData.INTENT_DISPLAY_TYPES.ATTACKING: attacking_intent,
+	EnemyIntentData.INTENT_DISPLAY_TYPES.BLOCKING: blocking_intent,
+	EnemyIntentData.INTENT_DISPLAY_TYPES.DEBUFFING: debuffing_intent,
+	EnemyIntentData.INTENT_DISPLAY_TYPES.BUFFING: buffing_intent,
+	EnemyIntentData.INTENT_DISPLAY_TYPES.SUMMONING: summoning_intent,
+}
+
+@onready var enemy_intent_amount_label: Label = $Visible/Intent/IntentAmount
+
+@onready var name_label = %NameLabel
+@onready var death_animation_player: AnimationPlayer = $DeathAnimationPlayer
+
+var enemy_data: EnemyData = null
 var enemy_slot: int = 0 # the spawn slot the enemy is in
 
 var enemy_intent_attack_damage: int = 0
@@ -18,7 +36,8 @@ func init(_enemy_data: EnemyData):
 	selection_button.mouse_entered.connect(_on_mouse_entered)
 	selection_button.mouse_exited.connect(_on_mouse_exited)
 	
-	sprite.texture = FileLoader.load_texture(enemy_data.enemy_texture_path)
+	animated_sprite_2d.sprite_frames = get_animation_sprite_frames()
+	animated_sprite_2d.play(AnimationData.ANIMATION_IDLE)
 	
 	# apply initial effects
 	for status_effect_object_id in enemy_data.enemy_initial_status_effects.keys():
@@ -29,6 +48,10 @@ func init(_enemy_data: EnemyData):
 	
 	# update_health_bar()
 	layered_health_bar.init(enemy_data.enemy_health, enemy_data.enemy_health_max)
+	
+func get_animation_data() -> AnimationData:
+	var animation_data: AnimationData = Global.get_animation_data(enemy_data.enemy_animation_id)
+	return animation_data
 
 ## Does damage to combatant and returns [unblocked damage dealt, damage to 0 (if enemy dies), overkill damage (if enemy dies)]
 ## eg 15 damage on 10 remaining health and 3 block will return [12, 10, 2].
@@ -37,7 +60,7 @@ func damage(_damage: int, bypass_block: bool = false) -> Array[int]:
 	var bypassed_damage: int = _damage # raw unblocked damage
 	var bypassed_damage_capped: int = 0 # damage done that does not factor in overkill damage
 	var overkill_damage: int = 0 # damage done past 0
-
+	
 	if enemy_data.enemy_block > 0 and not bypass_block:
 		if enemy_data.enemy_block > _damage:
 			# damage less than block
@@ -62,13 +85,22 @@ func damage(_damage: int, bypass_block: bool = false) -> Array[int]:
 	overkill_damage = max(0, bypassed_damage - enemy_data.enemy_health)
 	bypassed_damage_capped = bypassed_damage - overkill_damage
 	
+	# check health to prevent multiple deaths
 	if enemy_data.enemy_health > 0:
+		# damage the enemy
 		enemy_data.enemy_health = max(0, enemy_data.enemy_health - bypassed_damage)
-		Signals.combatant_damaged.emit(self, bypassed_damage)
+		Signals.combatant_damaged.emit(self, bypassed_damage, bypassed_damage_capped, overkill_damage)
+		
+		# generate an interceptable action and intercept it to possibly change health
+		if enemy_data.enemy_health <= 0:
+			ActionGenerator.generate_combatant_death(self)
+		
+		# update healthbar and potentially kill enemy
 		update_health_bar(true)
 		if enemy_data.enemy_health <= 0:
-			if not animation_player.is_playing():
-				animation_player.play("death")
+			if not death_animation_player.is_playing():
+				animated_sprite_2d.play(AnimationData.ANIMATION_DEATH)
+				death_animation_player.play("Enemy/death")
 				remove_from_group("enemies")
 				Signals.enemy_killed.emit(self)
 	
@@ -87,7 +119,24 @@ func get_block() -> int:
 func add_block(amount: int) -> void:
 	set_block(enemy_data.enemy_block + amount)
 	if amount > 0:
+		create_block_fade()
 		Signals.combatant_block_added.emit(self)
+
+#region Health
+func heal_percentage(percent: float):
+	var percentage_health: int = int(ceil(float(enemy_data.enemy_health_max) * percent))
+	add_health(percentage_health, 0)
+
+func add_health(health_amount: int, health_amount_max: int = 0) -> void:
+	set_health(enemy_data.enemy_health + health_amount, enemy_data.enemy_health_max + health_amount_max)
+
+func set_health(health_amount: int, health_amount_max: int = enemy_data.enemy_health_max) -> void:
+	var is_damaged: bool = health_amount < enemy_data.enemy_health
+	
+	enemy_data.enemy_health_max = max(1, enemy_data.enemy_health_max)
+	enemy_data.enemy_health = clamp(0, health_amount, enemy_data.enemy_health_max)
+	
+	update_health_bar(is_damaged)
 
 func update_health_bar(as_damage: bool = false) -> void:
 	if as_damage:
@@ -95,19 +144,45 @@ func update_health_bar(as_damage: bool = false) -> void:
 	else:
 		layered_health_bar.update_health_layers(enemy_data.enemy_health, enemy_data.enemy_health_max, status_id_to_status_effects)
 
+func get_combatant_health() -> int:
+	return enemy_data.enemy_health
+
+func get_combatant_health_max() -> int:
+	return enemy_data.enemy_health_max
+
+#endregion
+
+## Changes the enemy's intent to the next intent in the random walk.
 func cycle_enemy_intent():
-	enemy_data.cycle_next_attack_state()
+	enemy_data.cycle_next_intent_state()
 	update_enemy_intent()
 	Signals.enemy_intent_changed.emit()
 
+## Displays the enemy's intentions above them based on their current intent.
 func update_enemy_intent():
-	# displays the enemy's attack
-	
-	
 	# get current intent's attack
-	var attack_damages: Array = enemy_data.get_current_attack_damages()
-	var attack_damage: int = attack_damages[0]
-	var number_of_attacks: int = attack_damages[1]
+	var current_enemy_intent: EnemyIntentData = enemy_data.get_current_intent()
+	var attack_damage: int = 0
+	var number_of_attacks: int = 0
+	if current_enemy_intent == null:
+		breakpoint
+	else:
+		attack_damage = current_enemy_intent.enemy_intent_attack_damage
+		number_of_attacks = current_enemy_intent.enemy_intent_number_of_attacks
+	
+	# reset intent icon visibility
+	for intent_icon: TextureRect in INTENT_DISPLAY_TYPE_TO_INTENT.values():
+		intent_icon.hide()
+	
+	# show intent icons based on intent
+	for display_intent_type: int in current_enemy_intent.enemy_intent_display_types:
+		var intent_icon: TextureRect = INTENT_DISPLAY_TYPE_TO_INTENT.get(display_intent_type, null)
+		if intent_icon == null:
+			breakpoint
+			DebugLogger.log_error("Enemey: No intent icon mapped to EnemyIntentData.INTENT_DISPLAY_TYPES of value {0}".format([display_intent_type]))
+			continue
+		else:
+			intent_icon.show()
 	
 	var player: Player = Global.get_player()
 	
@@ -146,12 +221,12 @@ func update_enemy_intent():
 		enemy_intent_number_of_attacks = max(0, action_interceptor_processor.get_shadowed_action_values("number_of_attacks", 0))
 	
 	### Display intent
-	enemy_intent.visible = false
+	enemy_intent_amount_label.visible = false
 	if enemy_intent_attack_damage * enemy_intent_number_of_attacks > 0:
-		enemy_intent.visible = true
-		enemy_intent_amount_text.text = str(enemy_intent_attack_damage)
+		enemy_intent_amount_label.visible = true
+		enemy_intent_amount_label.text = str(enemy_intent_attack_damage)
 		if enemy_intent_number_of_attacks > 1:
-			enemy_intent_amount_text.text += " x " + str(enemy_intent_number_of_attacks)
+			enemy_intent_amount_label.text += " x " + str(enemy_intent_number_of_attacks)
 
 func is_alive() -> bool:
 	return enemy_data.enemy_health > 0

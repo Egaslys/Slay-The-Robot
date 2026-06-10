@@ -1,5 +1,6 @@
 ## Validator that checks to see if a card is adjacent to cards with given card ids.
 ## Fails if card not in hand.
+## NOTE: If an action is provided it will use the hand at time of play, rather than the current player hand.
 extends BaseValidator
 
 func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
@@ -10,7 +11,7 @@ func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[S
 	
 	
 	var card_data: CardData = _card_data
-	var hand: Array[CardData] = Global.player_data.player_hand
+	var hand: Array[CardData] = HandManager.player_hand
 	
 	# take the card and hand from action if one provided
 	if _action != null:
@@ -23,7 +24,7 @@ func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[S
 		return false
 	
 	# card must be in hand
-	if not Global.player_data.player_hand.has(_card_data):
+	if not HandManager.player_hand.has(_card_data):
 		return false
 	
 	# position of the card in hand

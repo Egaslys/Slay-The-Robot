@@ -1,5 +1,5 @@
-# Validator for checking a card play's input energy cost
-# This may be useful for variable cost cards to allow different behaviors at different thresholds
+## Validator for checking a card play's input energy cost
+## This may be useful for variable cost cards to allow different behaviors at different thresholds
 extends BaseValidator
 
 func _validation(_card_data: CardData, action: BaseAction, values: Dictionary[String, Variant]) -> bool:
@@ -8,10 +8,10 @@ func _validation(_card_data: CardData, action: BaseAction, values: Dictionary[St
 	var comparison_value: Variant = _get_validator_value("comparison_value", values, action, 0)
 	
 	if action == null:
-		push_error("No card given")
+		DebugLogger.log_error("ValidatorCardPlayEnergyInput: No card given")
 		return false
 	elif action.card_play_request == null:
-		push_error("No card play given")
+		DebugLogger.log_error("ValidatorCardPlayEnergyInput: No card play given")
 		return false
 	else:
 		var input_energy: int = action.card_play_request.input_energy
