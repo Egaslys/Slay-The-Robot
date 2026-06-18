@@ -1,4 +1,7 @@
-# Wraps child actions, modifying their values based on the card's input energy, allowing for variable cost cards to work
+## Wraps child actions, modifying their values based on the card's input energy, allowing for variable (X cost) cards to work
+## NOTE: You may wish to combine this with a ActionVariableActionGenerator child action modifying action_count to
+## make an X cost card that does an action payload X times.
+## It'll be nested as ActionVariableCostModifer(ActionVariableActionGenerator(Action Payload))
 extends BaseAction
 
 func is_instant_action() -> bool:

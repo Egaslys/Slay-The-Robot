@@ -11,6 +11,9 @@ var artifact_script: BaseArtifact
 func _ready():
 	Signals.artifact_proc.connect(_on_artifact_proc)
 	Signals.artifact_counter_changed.connect(_on_artifact_counter_changed)
+	
+	mouse_entered.connect(_on_mouse_entered)
+	mouse_exited.connect(_on_mouse_exited)
 
 func init(_artifact_data: ArtifactData):
 	artifact_data = _artifact_data
@@ -18,12 +21,6 @@ func init(_artifact_data: ArtifactData):
 	artifact_script = artifact_script_asset.new(artifact_data)
 	texture_normal = FileLoader.load_texture(artifact_data.artifact_texture_path)
 	update_artifact_counter()
-	
-	tooltip_text = artifact_data.artifact_name
-	if artifact_data.artifact_description != "":
-		if len(artifact_data.ARTIFACT_RARITIES.keys()) > artifact_data.artifact_rarity:
-			tooltip_text += "\n" + artifact_data.ARTIFACT_RARITIES.keys()[artifact_data.artifact_rarity]
-		tooltip_text += "\n" + artifact_data.artifact_description
 	
 	# only right clicking allowed
 	button_up.connect(_on_right_button_up)
@@ -45,3 +42,10 @@ func update_artifact_counter() -> void:
 
 func _on_right_button_up() -> void:
 	artifact_script.right_click_artifact()
+
+
+func _on_mouse_entered() -> void:
+	if artifact_data.artifact_description != "":
+		HandManager.tooltip.display_artifact_tooltip(artifact_script)
+func _on_mouse_exited() -> void:
+	HandManager.tooltip.hide_tooltip()

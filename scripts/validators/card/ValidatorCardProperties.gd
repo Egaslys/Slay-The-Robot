@@ -1,5 +1,6 @@
-# Generic validator for checking any card's properties using CardData.get() and _compare()
-# Properties and comparison values pulled will be treated as variants until compared, so this can possibly cause runtime errors
+## Generic validator for checking any card's properties using CardData.get() and _compare()
+## Properties and comparison values pulled will be treated as variants until compared, so this can possibly cause runtime errors
+## See ValidatorCardValues for card_values checking.
 extends BaseValidator
 
 func _validation(card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
@@ -8,7 +9,7 @@ func _validation(card_data: CardData, _action: BaseAction, values: Dictionary[St
 	var comparison_value: Variant = _get_validator_value("comparison_value", values, _action, 0)
 	
 	if card_data == null:
-		push_error("No card given")
+		DebugLogger.log_error("No parent card found")
 		return false
 	else:
 		var card_property_value: Variant = card_data.get(card_property_name)

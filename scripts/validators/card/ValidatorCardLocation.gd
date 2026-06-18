@@ -1,14 +1,13 @@
-# Validator for determining card location in combat (hand, draw, etc)
-# see CardPlayRequest.CARD_PLAY_DESTINATIONS and CardData.get_card_location() for more
+## Validator for determining card location in combat (hand, draw, etc)
+## see HandManager piles
 extends BaseValidator
 
 func _validation(card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
 	if card_data == null:
-		push_error("No card given")
+		DebugLogger.log_error("ValidatorCardLocation: No card given")
 		return false
 	
-	var card_locations: Array = _get_validator_value("card_locations", values, _action, [CardPlayRequest.CARD_PLAY_DESTINATIONS.DRAW_TOP]) # acceptable locations for the card to be in
-	var card_deck_location: int = card_data.get_card_deck_location()
+	var card_locations: Array = _get_validator_value("card_locations", values, _action, [HandManager.HAND_PILE]) # acceptable locations for the card to be in
+	var card_deck_location: String = HandManager.get_card_pile_location_name(card_data)
 	
 	return card_locations.has(card_deck_location)
-

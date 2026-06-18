@@ -19,7 +19,7 @@ func process_action_interception(action_interceptor_processor: ActionInterceptor
 	
 	var status_effect_data: StatusEffectData = Global.get_status_effect_data(status_effect_object_id)
 	if status_effect_data == null:
-		push_error("Status effect \"", status_effect_object_id,"\" does not exist")
+		DebugLogger.log_error("InterceptorNegateDebuff: Status effect \"{0}\" does not exist".format([status_effect_object_id]))
 		return ACTION_ACCEPTENCES.REJECTED
 	
 	# determine if the status is a debuff or a buff with negative charges

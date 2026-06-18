@@ -6,8 +6,11 @@ extends Control
 
 @onready var map = $%Map
 
+var rest_action_id_to_rest_action_button: Dictionary[String, RestActionButton] = {}
+
 func _ready():
 	Signals.combat_started.connect(_on_combat_started)
+	Signals.rest_action_ended.connect(_on_rest_action_ended)
 
 	Signals.map_location_selected.connect(_on_map_location_selected)
 	continue_button.button_up.connect(_on_continue_button_up)
@@ -33,15 +36,30 @@ func populate_rest_actions() -> void:
 			rest_action_button.init(rest_action_object_id)
 			rest_action_button.rest_action_button_up.connect(_on_rest_action_button_up)
 			rest_action_button.disabled = not rest_action_button.validate_rest_button()
+			
+			rest_action_id_to_rest_action_button[rest_action_object_id] = rest_action_button
 
 func _on_rest_action_button_up(rest_action_button: RestActionButton):
+	if ActionHandler.actions_being_performed:
+		return
+	
 	# perform actions
 	var rest_action_data: RestActionData = Global.get_rest_action_data(rest_action_button.rest_action_object_id)
 	if rest_action_data != null:
 		var action_data: Array[Dictionary] = rest_action_data.rest_actions
 		var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(null, null, [], action_data, null)
+		
+		if rest_action_data.rest_action_auto_end:
+			var rest_action_end: BaseAction = ActionGenerator.generate_rest_action_end(rest_action_data.object_id)
+			generated_actions.push_front(rest_action_end)
+			
 		ActionHandler.add_actions(generated_actions, false)
-	
+
+func _on_rest_action_ended(rest_action_id: String):
+	var rest_action_data: RestActionData = Global.get_rest_action_data(rest_action_id)
+	if rest_action_data != null:
+		var rest_action_button: RestActionButton = rest_action_id_to_rest_action_button[rest_action_id]
+		
 		# disable buttons based on pressed button's exclusivity
 		var rest_action_cost_type: int = rest_action_data.rest_action_cost_type
 		
@@ -55,11 +73,12 @@ func _on_rest_action_button_up(rest_action_button: RestActionButton):
 				if other_button_rest_action_data.rest_action_cost_type == RestActionData.REST_ACTION_COST_TYPES.EXCLUSIVE:
 					other_button.excluded = true
 	
-	# re-validate all rest buttons
-	for button: RestActionButton in rest_action_container.get_children():
-		button.disabled = not button.validate_rest_button()
+		# re-validate all rest buttons
+		for button: RestActionButton in rest_action_container.get_children():
+			button.disabled = not button.validate_rest_button()
 
 func clear_rest_actions():
+	rest_action_id_to_rest_action_button.clear()
 	for child in rest_action_container.get_children():
 		child.queue_free()
 

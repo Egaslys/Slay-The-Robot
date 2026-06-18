@@ -1,4 +1,4 @@
-# Validator for checking a card's energy cost
+## Validator for checking a card's energy cost.
 extends BaseValidator
 
 func _validation(card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
@@ -8,7 +8,7 @@ func _validation(card_data: CardData, _action: BaseAction, values: Dictionary[St
 	var variable_cost_is_zero: bool = _get_validator_value("variable_cost_is_zero", values, _action, false)
 	
 	if card_data == null:
-		push_error("No card given")
+		DebugLogger.log_error("ValidatorCardEnergyCost: No card given")
 		return false
 	else:
 		var card_energy: int = card_data.get_card_energy_cost(true, variable_cost_is_zero)

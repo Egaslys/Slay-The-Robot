@@ -24,13 +24,15 @@ func _ready():
 
 func _on_card_pick_requested(card_pick_action: ActionBasePickCards):
 	if card_pick_action != null:
-		if ActionBasePickCards.DECK_PICK_TYPES.has(card_pick_action.get_card_pick_type()):
+		if HandManager.DECK_PICK_TYPES.has(card_pick_action.get_card_pick_type()):
 			set_card_mode(CARD_MODES.SELECT)
 			current_card_pick_action = card_pick_action
+			populate_cards(card_pick_action.get_pickable_cards())
+			
 			card_picking_label.text = current_card_pick_action.get_card_pick_text()
 			confirm_button.visible = current_card_pick_action.are_enough_cards_picked()
-			populate_cards(card_pick_action.get_pickable_cards())
-		
+			
+			back_button.visible = current_card_pick_action.get_card_pick_can_back_out()
 
 func _on_card_pick_confirmed():
 	visible = false
@@ -89,6 +91,9 @@ func _on_confirm_button_up():
 
 func _on_back_button_up():
 	visible = false
+	if current_card_pick_action != null:
+		current_card_pick_action.picked_cards = []
+		Signals.card_pick_confirmed.emit()
 	
 ### View mode wrappers
 
@@ -114,17 +119,17 @@ func view_deck() -> void:
 func view_draw_pile() -> void:
 	set_card_mode(CARD_MODES.VIEW)
 	# randomize the draw pile so player's can't see next cards
-	var randomized_draw: Array[CardData] = Global.player_data.player_draw.duplicate(false)
+	var randomized_draw: Array[CardData] = HandManager.player_draw.duplicate(false)
 	randomized_draw.shuffle() #NOTE: this doesn't need to be deterministic
 	populate_cards(randomized_draw)
 
 func view_discard() -> void:
 	set_card_mode(CARD_MODES.VIEW)
-	populate_cards(Global.player_data.player_discard)
+	populate_cards(HandManager.player_discard)
 
 func view_exhaust() -> void:
 	set_card_mode(CARD_MODES.VIEW)
-	populate_cards(Global.player_data.player_exhaust)
+	populate_cards(HandManager.player_exhaust)
 	
 func _on_run_started():
 	visible = false

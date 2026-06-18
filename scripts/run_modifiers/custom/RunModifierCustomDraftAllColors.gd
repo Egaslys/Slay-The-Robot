@@ -6,7 +6,7 @@ func run_start_modification() -> void:
 	
 	# add custom actions
 	var action_data: Array[Dictionary] = [
-		{Scripts.ACTION_UPDATE_DRAFT_CARDS: {
+		{Scripts.ACTION_UPDATE_CARD_DRAFTS: {
 			"add_card_pack_object_ids": ["card_pack_prismatic"]
 		}}
 	]

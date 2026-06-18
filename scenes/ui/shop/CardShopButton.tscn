@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://by6liy3faabuk"]
 
 [ext_resource type="Script" uid="uid://c0pu5ciowd6mx" path="res://scripts/ui/shop/CardShopButton.gd" id="1_c2gpa"]
-[ext_resource type="PackedScene" uid="uid://btxmfagad05n5" path="res://scenes/ui/Card.tscn" id="2_1jbuy"]
+[ext_resource type="PackedScene" uid="uid://btxmfagad05n5" path="res://scenes/ui/card/Card.tscn" id="2_1jbuy"]
 
 [node name="CardShopButton" type="Control"]
 custom_minimum_size = Vector2(144, 208)

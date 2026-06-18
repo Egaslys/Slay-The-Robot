@@ -1,3 +1,6 @@
+## Handles containing enemies and spawning them
+## Can handle both automatic placement and slot based placement for
+## enemies based on EventData.event_enemy_placement_is_automatic positioning type.
 extends Control
 
 @onready var automatic_enemy_container: HBoxContainer = $AutomaticEnemyContainer
@@ -7,7 +10,7 @@ func _ready():
 	Signals.run_ended.connect(_on_run_ended)
 	Signals.enemy_spawn_requested.connect(_on_enemy_spawn_requested)
 
-func populate_enemies(event_data: EventData = Global.get_player_event_data()):
+func populate_enemies_from_event(event_data: EventData = Global.get_player_event_data()):
 	# populates initial enemies from an event
 	clear_enemies()
 	
@@ -21,7 +24,7 @@ func populate_enemies(event_data: EventData = Global.get_player_event_data()):
 		# spawns will still happen but not go beyond that
 		if not event_data.event_enemy_placement_is_automatic:
 			if len(event_data.event_enemy_placement_positions) < len(event_data.event_weighted_enemy_object_ids):
-				push_error("Enemy spawns ({0}) exceed number of positions ({1}) in event ({2})".format([
+				DebugLogger.log_error("EnemyContainer: Enemy spawns \"{0}\" exceed number of positions \"{1}\" in event \"{2}\"".format([
 					len(event_data.event_weighted_enemy_object_ids),
 					len(event_data.event_enemy_placement_positions),
 					event_data.object_id,
@@ -42,18 +45,21 @@ func populate_enemies(event_data: EventData = Global.get_player_event_data()):
 				break
 		
 		if event_data.event_enemy_placement_is_automatic:
-			var enemy: Enemy = spawn_enemy(enemy_object_id, enemy_container)
+			var _enemy: Enemy = _spawn_enemy(enemy_object_id, enemy_container)
 		else:
-			var enemy: Enemy = spawn_enemy_at_slot(enemy_object_id, enemy_counter)
+			var _enemy: Enemy = spawn_enemy_at_slot(enemy_object_id, enemy_counter)
 		
 		enemy_counter += 1
 
-func spawn_enemy(enemy_object_id: String, container: Control = automatic_enemy_container) -> Enemy:
-	# general function for spawning enemies
+## Helper function for spawning enemies. Supplied a container for either automatic placement or
+## positional placement depending on the event.
+func _spawn_enemy(enemy_object_id: String, container: Control = automatic_enemy_container) -> Enemy:
+	
 	var enemy: Enemy = Scenes.ENEMY.instantiate()
 	var enemy_data: EnemyData = Global.get_enemy_data_from_prototype(enemy_object_id)
 	
 	enemy_data.apply_enemy_difficulty_modifiers()
+	enemy_data.randomize_health(true)
 	
 	container.add_child(enemy)
 	enemy.init(enemy_data)
@@ -61,7 +67,7 @@ func spawn_enemy(enemy_object_id: String, container: Control = automatic_enemy_c
 	return enemy
 
 func spawn_enemy_at_slot(enemy_object_id: String, slot_id: int) -> Enemy:
-	var enemy: Enemy = spawn_enemy(enemy_object_id, positional_enemy_container)
+	var enemy: Enemy = _spawn_enemy(enemy_object_id, positional_enemy_container)
 	enemy.enemy_slot = slot_id
 	
 	# determine non automatic enemy position
@@ -71,7 +77,7 @@ func spawn_enemy_at_slot(enemy_object_id: String, slot_id: int) -> Enemy:
 		var enemy_position: Vector2 = Vector2(pos[0], pos[1])
 		enemy.position = enemy_position
 	else:
-		push_error("Spawn slot at index ", slot_id, " undefined in event ", event_data.object_id)
+		DebugLogger.log_error("EnemyContainer: Spawn slot at index \"{0}\" undefined in event \"{1}\"".format([slot_id, event_data.object_id]))
 	
 	return enemy
 

@@ -10,7 +10,7 @@ func init(_action_on_click: BaseAction) -> void:
 	
 	var card_data: CardData = _action_on_click.values.get("card_data", null)
 	if card_data != null:
-		card.init(card_data, 0, false, true)
+		card.init(card_data, 0, false)
 
 func _on_card_selected(_card: Card):
 	_on_button_up()

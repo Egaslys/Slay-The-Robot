@@ -1,4 +1,4 @@
-# provides a basic text which fades over a combatant
+## provides a basic text which fades above a combatant
 extends Node2D
 class_name TextFade
 

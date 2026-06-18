@@ -281,7 +281,7 @@ func set_serializable_properties(object_data: Dictionary, json_friendly: bool = 
 						serializeable_data.set_serializable_properties(new_value)
 						set(property_name, serializeable_data)
 					else:
-						push_error("No dictionary detected for unpacking in field ", property_name)
+						DebugLogger.log_error("BaseCardsetAction.set_serializable_properties(): No dictionary detected for unpacking in field \"{0}\"".format([property_name]))
 				
 				continue
 			### convert to native godot object collections from json

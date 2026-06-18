@@ -1,8 +1,8 @@
 # Wraps child actions, modifying their values
 # Amount based on a given combat stat
-# NOTE: As this is an action and not a listener, its wrapped value(s) are calculated on runtime
+# NOTE: As this is an action and not a decorator, its wrapped value(s) are calculated on runtime
 # and cannot be previewed on a card
-# If you want the value to be seen in the description, use a listener such as ListenerCardValueModifier
+# If you want the value to be seen in the description, use a decorator such as CardDecoratorDynamicValueModifier
 extends BaseAction
 
 func is_instant_action() -> bool:
@@ -20,15 +20,15 @@ func perform_action():
 		var multiplied_values_bases: Dictionary = action_interceptor_processor.get_shadowed_action_values("multiplied_values_bases", {})	# allows for a base value on top of modified values. eg Base + (X x Value)
 		
 		# get combat stat muliplier
-		var combat_stats_data: CombatStatsData = Global.get_combat_stats()
+		var combat_stats_data: CombatStatsData = StatsHandler.current_combat_stats
 		var stat_enum: int = action_interceptor_processor.get_shadowed_action_values("stat_enum", CombatStatsData.STATS.ENEMIES_KILLED)
 		var is_total_stat: bool = action_interceptor_processor.get_shadowed_action_values("is_total_stat", false)
 		
 		var stat_value: int = 0
 		if is_total_stat:
-			stat_value = combat_stats_data.get_total_stat(stat_enum)
+			stat_value = combat_stats_data.get_total_enum_stat(stat_enum)
 		else:
-			stat_value = combat_stats_data.get_turn_stat(stat_enum)
+			stat_value = combat_stats_data.get_turn_enum_stat(stat_enum)
 		
 		# creates a duplicate of the child action data, then modifies any keys with a multiple of the card play's input energy
 		for action in action_data.duplicate(true):

@@ -41,26 +41,16 @@ signal card_discarded(card: CardData, is_manual_discard: bool)
 signal card_exhausted(card: CardData)
 signal card_banished(card: CardData, in_limbo: bool) # card removed from play. in_limbo used for cards that aren't really banished, merely removed from play to be re-added by another action
 signal card_added_to_draw(card_data: CardData)
+signal card_added_to_hand(card_data: CardData)
 signal card_retained(card: CardData)
 signal card_upgraded(card: CardData) # whenever a card is successfully upgraded
 signal card_created(card: CardData) # whenever a card is created either from nothing or duplication
 signal card_properties_changed(card: CardData)	# general signal for when a card's card_values or other properties have been altered, usually requiring a rerender of Card object
 signal card_turn_energy_changed(card: CardData)	# special signal for when a card's per turn energy property has been changed, which requires tracking
 signal card_transformed(card: CardData)	# general signal for when a card is transformed. See also: card_transformed_in_deck
+signal card_decorators_changed(card: CardData)	# when the decorators in a card have been modified
 signal card_hand_limit_reached	# hand is full
 signal card_queue_refunded
-
-# hand card requests
-signal card_play_requested(card_play_request: CardPlayRequest, require_energy: bool, front_of_queue: bool)	# an action is requesting to play a card
-signal card_draw_requested(count: int, hand_card_count_max: int)	# an action is requesting to draw a number of cards, limited to a given hand size
-signal card_discard_requested(cards: Array[CardData], is_manual_discard: bool)	# an action is requesting to discard cards
-signal card_exhaust_requested(cards: Array[CardData])	# an action is requesting to exhaust cards and move them to exhaust pile
-signal card_banish_requested(cards: Array[CardData], in_limbo)	# an action is requesting to banish cards (special "exhaust" like mechanic that removes card from play entirely)
-signal card_retain_requested(cards: Array[CardData])	# an action is requesting to keep cards in hand for this turn
-signal card_add_to_hand_requested(cards: Array[CardData], hand_card_count_max: int)	# an action is requesting to add cards directly to the hand, limited to a given hand size
-signal card_add_to_draw_requested(cards: Array[CardData], card_destination: int)	# an action is requesting to add cards directly to the hand. Destination refers to CARD_PLAY_DESTINATIONS
-signal reshuffle_requested(shuffle_discard_into_draw)	# an action is to reshuffle player's deck
-signal disable_hand_requested	# an action is requesting to disable the hand to prevent the player playing more cards
 
 # card picking
 signal card_pick_requested(card_pick_action: ActionBasePickCards)	# an action has requested cards from the player. Action's card_pick_type affects the ui used for selection
@@ -77,7 +67,6 @@ signal game_paused
 signal game_unpaused
 
 #region Run
-signal character_selected(character_object_id: String)
 signal run_started # player has started or continued a run
 signal run_ended # player has ended a run (does not necessarily mean victory/defeat)
 signal run_victory # player has won a run
@@ -89,9 +78,11 @@ signal reward_grant_requested(reward_group: int, money_amount: int, card_drafts:
 signal reward_clear_requested(reward_group: int) # -1 for clear all rewards
 
 # player stats
-signal player_money_changed
+signal player_money_changed(money_delta: int)
 signal player_health_changed
-signal player_artifacts_changed
+signal player_artifacts_changed # used for updating the ui
+signal player_artifact_added(artifact_data: ArtifactData)
+signal player_artifact_removed(artifact_data: ArtifactData)
 signal combat_stat_changed(stat_enum: int)	# can be used to hook into certain stats
 #endregion
 
@@ -102,6 +93,7 @@ signal shop_opened	# player has opened a shop
 signal shop_visited_first_time # player has visited a shop for the first time
 signal dialogue_started
 signal dialogue_ended
+signal rest_action_ended(rest_action_id: String) # a rest action has finished
 #endregion
 
 #region Combat
@@ -121,9 +113,9 @@ signal custom_ui_requested
 signal combatant_block_added(base_combatant: BaseCombatant)
 signal combatant_block_broken(base_combatant: BaseCombatant)	# the combatant has had their block broken through. Not emitted if bypassed damage
 signal combatant_blocked(base_combatant: BaseCombatant, damage_blocked: int)	# combatant fully blocked an attack
-signal combatant_damaged(base_combatant: BaseCombatant, unblocked_damage: int)	# a combatant has taken health damage. Cannot be 0
+signal combatant_damaged(base_combatant: BaseCombatant, unblocked_damage: int, zero_capped_damage: int, overkill_damage: int)	# a combatant has taken health damage. Cannot be 0
 
-signal energy_added(energy_amount: int)	# when the player gains energy not at start of turn
+signal energy_changed	# when the player gains energy not at start of turn
 
 # enemies
 signal enemy_intent_changed

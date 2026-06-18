@@ -1,87 +1,43 @@
-[gd_scene load_steps=8 format=3 uid="uid://c0sxkaemtqb5x"]
+[gd_scene load_steps=10 format=3 uid="uid://c0sxkaemtqb5x"]
 
 [ext_resource type="Script" uid="uid://bu5jx208ipx8i" path="res://scripts/combatants/Player.gd" id="1_hkgmy"]
+[ext_resource type="AnimationLibrary" uid="uid://c6xlbg8p1y2er" path="res://animations/Player.res" id="2_6d0fj"]
+[ext_resource type="AnimationLibrary" uid="uid://dvbwuh87t2tha" path="res://animations/Combatant.res" id="2_p0uf2"]
 [ext_resource type="Texture2D" uid="uid://nh32y87hcke5" path="res://icon.svg" id="2_snepv"]
 [ext_resource type="PackedScene" uid="uid://b0qk0vn81d0kp" path="res://scenes/combatants/LayeredHealthBar.tscn" id="3_ef7si"]
+[ext_resource type="Texture2D" uid="uid://dw4k1k81ap581" path="res://sprites/missing_texture.png" id="4_m3o5b"]
+[ext_resource type="PackedScene" uid="uid://d3ay0q2ywlmkj" path="res://scenes/combatants/SpeechBubble.tscn" id="6_jg3sr"]
 
-[sub_resource type="Animation" id="Animation_0d3kb"]
-resource_name = "attack"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Visible/Sprite:offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(30, 0), Vector2(0, 0)]
-}
+[sub_resource type="AtlasTexture" id="AtlasTexture_7in10"]
+atlas = ExtResource("4_m3o5b")
+region = Rect2(0, 0, 64, 64)
 
-[sub_resource type="Animation" id="Animation_q0hal"]
-resource_name = "death"
-tracks/0/type = "method"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(1),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"_on_death_animtation_finished"
+[sub_resource type="SpriteFrames" id="SpriteFrames_e5l7p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7in10")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7in10")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7in10")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
 }]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Visible/Sprite:self_modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_u2grh"]
-resource_name = "run_start"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Visible/Sprite:offset")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(-150, 0), Vector2(0, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Visible/Sprite:self_modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_htloy"]
-_data = {
-&"attack": SubResource("Animation_0d3kb"),
-&"death": SubResource("Animation_q0hal"),
-&"run_start": SubResource("Animation_u2grh")
-}
 
 [node name="Player" type="Control" groups=["players"]]
 custom_minimum_size = Vector2(200, 144)
@@ -93,7 +49,8 @@ script = ExtResource("1_hkgmy")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_htloy")
+&"Combatant": ExtResource("2_p0uf2"),
+&"Player": ExtResource("2_6d0fj")
 }
 
 [node name="Visible" type="Control" parent="."]
@@ -101,18 +58,25 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="Sprite" type="Sprite2D" parent="Visible"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visible"]
+unique_name_in_owner = true
 position = Vector2(64, 48)
-texture = ExtResource("2_snepv")
+sprite_frames = SubResource("SpriteFrames_e5l7p")
+animation = &"idle"
 
-[node name="LayeredHealthBar" parent="Visible/Sprite" instance=ExtResource("3_ef7si")]
+[node name="LayeredHealthBar" parent="Visible/AnimatedSprite2D" instance=ExtResource("3_ef7si")]
+unique_name_in_owner = true
 
-[node name="SelectionButton" type="Button" parent="Visible/Sprite"]
+[node name="SelectionButton" type="Button" parent="Visible/AnimatedSprite2D"]
+unique_name_in_owner = true
 self_modulate = Color(1, 1, 1, 0)
 offset_left = -67.0
 offset_top = -64.0
 offset_right = 69.0
 offset_bottom = 64.0
+
+[node name="ImageFadeContainer" type="Node2D" parent="Visible/AnimatedSprite2D"]
+unique_name_in_owner = true
 
 [node name="IncomingDamage" type="Control" parent="Visible"]
 visible = false
@@ -167,6 +131,14 @@ offset_top = 144.0
 offset_right = 24.0
 offset_bottom = 184.0
 columns = 6
+
+[node name="SpeechBubble" parent="Visible" instance=ExtResource("6_jg3sr")]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 152.0
+offset_top = -16.0
+offset_right = 280.0
+offset_bottom = 48.0
 
 [node name="CustomUIContainer" type="Control" parent="Visible"]
 layout_mode = 3

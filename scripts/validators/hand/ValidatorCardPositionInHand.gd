@@ -1,11 +1,12 @@
 ## Validator for determining if the card is in a given position in player's hand
+## NOTE: If an action is provided it will use the hand at time of play, rather than the current player hand.
 extends BaseValidator
 
 func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[String, Variant]) -> bool:
 	var position_in_hand: String = _get_validator_value("position_in_hand", values, _action, "center")	# left, center, right
 		
 	var card_data: CardData = _card_data
-	var hand: Array[CardData] = Global.player_data.player_hand
+	var hand: Array[CardData] = HandManager.player_hand
 	
 	# take the card and hand from action if one provided
 	if _action != null:
@@ -14,7 +15,7 @@ func _validation(_card_data: CardData, _action: BaseAction, values: Dictionary[S
 			hand = _action.card_play_request.hand_at_play_time
 	
 	if card_data == null:
-		push_error("No card given")
+		DebugLogger.log_error("ValidatorCardPositionInHand: No card given")
 		return false
 	
 	var index_of_card: int = hand.find(card_data)

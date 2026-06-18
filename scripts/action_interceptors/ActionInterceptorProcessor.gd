@@ -10,7 +10,10 @@ class_name ActionInterceptorProcessor
 var parent_action: BaseAction = null	# the action tied to this processor
 var target: BaseCombatant = null	# the sub target to use for interception processing. Can be null
 
-var shadowed_action_values: Dictionary = {}	# this will contain any modified values for the parent action after processing has taken place. Use get_shadowed_action_values()
+## This will contain any modified values for the parent action after processing has taken place.
+## NOTE: Use get_shadowed_action_values() and set_shadowed_action_values() in interceptors
+## instead of modifying this directly.
+var shadowed_action_values: Dictionary = {}
 
 func _init(_parent_action: BaseAction, _target: BaseCombatant):
 	parent_action = _parent_action
@@ -41,6 +44,13 @@ func get_shadowed_action_values(key: String, default_value: Variant) -> Variant:
 		return shadowed_action_values[key_name]
 	else:
 		return parent_action.get_action_value(key, default_value)
+
+## Sets a value for a shadowed action value. Importantly, it will also perform custom_key_names
+## conversions.
+func set_shadowed_action_values(key: String, value: Variant) -> void:
+	var custom_action_value_keys: Dictionary = parent_action.values.get("custom_key_names", {})	# allows for having cards/actions use custom key names that convert to regular action key names. Useful for having cards with 2 of the same action but different values
+	var key_name: String = custom_action_value_keys.get(key, key)
+	shadowed_action_values[key_name] = value
 
 ## Returns a priority-sorted array of all interceptors involving an action, its parent, and its target.
 ## Both parent and target can be the same, and one or both can be null.

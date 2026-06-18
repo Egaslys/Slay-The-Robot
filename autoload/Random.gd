@@ -26,6 +26,33 @@ func shuffle_slice_array(rng: RandomNumberGenerator, array: Array, index: int = 
 	
 	return new_array
 
+#region Weighted Card Shuffling
+
+## Uses card weights to get a shuffle. These are used for buckets in a standard shuffle.
+func get_weighted_card_shuffle(rng: RandomNumberGenerator, cards: Array[CardData]) -> Array[CardData]:
+	var weighted_shuffle: Array[CardData] = []
+	# generate a list of cards with random weights
+	var card_weights: Array = []
+	for card_data: CardData in cards:
+		var weight: Array = [card_data, _get_weighted_card_shuffle_value(rng, card_data)]
+		card_weights.append(weight)
+	# sort the random weighted cards
+	card_weights.sort_custom(_sort_weighted_cards)
+	for weight_tuple: Array in card_weights:
+		weighted_shuffle.append(weight_tuple[0])
+	
+	return weighted_shuffle
+
+## Helper method. Given a card, get a random weighting. Used for get_weighted_card_shuffle()
+func _get_weighted_card_shuffle_value(rng: RandomNumberGenerator, card_data: CardData) -> float:
+	# clamps weights within a reasonable range to avoid asymptotic or weird values
+	return pow(rng.randf(), (1.0 / clamp(card_data.card_shuffle_weighting, 0.1, 10.0)))
+
+## Custom sort method for card weight tuples of [CardData, weight: float]. Used for get_weighted_card_shuffle().
+func _sort_weighted_cards(card_weight_tuple_1: Array, card_weight_tuple_2: Array) -> bool:
+	return card_weight_tuple_1[1] < card_weight_tuple_2[1]
+#endregion
+
 ## General random method. Randomly selects a variant object from a list of objects given a mapping of the objects to their
 ## respective weights.
 func get_weighted_selection(rng: RandomNumberGenerator, weights: Dictionary[Variant, int]) -> Variant:

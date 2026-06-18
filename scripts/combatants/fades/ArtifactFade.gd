@@ -1,4 +1,4 @@
-# provides a basic text which fades over a combatant
+## Provides a basic fade that displays above a combatant, typically the player
 extends Node2D
 class_name ArtifactFade
 

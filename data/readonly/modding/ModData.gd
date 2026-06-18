@@ -1,4 +1,5 @@
-## Read only data object that controls the loading of a single mod.
+## Read only data object that controls the loading of a single mod. These are represented as mod_info.json
+## files externally.
 extends SerializableData
 class_name ModData
 

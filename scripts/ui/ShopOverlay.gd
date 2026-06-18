@@ -15,6 +15,8 @@ func _ready():
 	Signals.map_location_selected.connect(_on_map_location_selected)
 	Signals.shop_opened.connect(_on_shop_opened)
 	
+	Signals.player_killed.connect(_on_player_killed)
+	
 	Signals.card_purchased.connect(_on_card_purchased)
 	Signals.artifact_purchased.connect(_on_artifact_purchased)
 	Signals.consumable_purchased.connect(_on_consumable_purchased)
@@ -149,4 +151,8 @@ func _on_continue_button_up():
 		Signals.run_victory.emit()
 
 func _on_map_location_selected(_location_data: LocationData):
+	visible = false
+
+func _on_player_killed(_player: Player):
+	clear_shop()
 	visible = false

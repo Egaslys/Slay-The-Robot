@@ -1,6 +1,7 @@
 ## Maintains UI and state machine logic for a dialogue event
 extends Control
 
+@onready var dialogue_name_label: RichTextLabel = $DialogueNameLabel
 @onready var dialogue_prompt_label: RichTextLabel = $DialoguePromptLabel
 @onready var dialogue_texture_rect: TextureRect = $DialogueTextureRect
 @onready var dialogue_option_container: VBoxContainer = $DialogueOptionContainer
@@ -52,6 +53,8 @@ func end_dialogue() -> void:
 func populate_dialogue_options() -> void:
 	clear_dialogue_options()
 	
+	# set name
+	dialogue_name_label.parse_bbcode(current_dialogue_data.dialogue_name_bbcode)
 	# set prompt
 	dialogue_prompt_label.parse_bbcode(current_dialogue_state.dialogue_state_prompt_bbcode)
 	
@@ -114,7 +117,9 @@ func _on_dialogue_option_clicked(dialogue_option: DialogueOption) -> void:
 	
 	# perform dialogue option actions
 	var player: Player = Global.get_player()
-	var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, null, [player], dialogue_option.action_data, null)
+	# generate fake card play request for the event
+	var card_play_request: CardPlayRequest = HandManager.create_card_play_request(null, player, false, false)
+	var generated_actions: Array[BaseAction] = ActionGenerator.create_actions(player, card_play_request, [player], dialogue_option.action_data, null)
 	ActionHandler.add_actions(generated_actions)
 	
 	if ActionHandler.actions_being_performed:
@@ -166,7 +171,7 @@ func _on_run_started():
 	reset_dialogue()
 
 func _on_player_killed(_player: Player):
-	visible = false
+	reset_dialogue()
 
 func _on_map_location_selected(_location_data: LocationData):
 	if _location_data.location_type != LocationData.LOCATION_TYPES.EVENT:

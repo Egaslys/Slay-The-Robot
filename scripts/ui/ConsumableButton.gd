@@ -19,6 +19,8 @@ func init(_consumable_slot_index: int):
 		tooltip_text = consumable_data.consumable_name
 		if consumable_data.consumable_description != "":
 			tooltip_text += "\n" + consumable_data.consumable_description
+		# texture
+		texture_normal = FileLoader.load_texture(consumable_data.consumable_texture_path)
 	else:
 		# empty consumable slot
 		self_modulate.a = 0.3

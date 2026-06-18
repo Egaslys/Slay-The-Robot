@@ -36,6 +36,8 @@ func populate_reward_display() -> void:
 	# generate reward buttons from reward data
 	clear_reward_display()
 	
+	var player: Player = Global.get_player()
+	
 	for reward_group: int in reward_data.keys():
 		var reward_group_data: Dictionary = reward_data[reward_group]
 		
@@ -44,11 +46,16 @@ func populate_reward_display() -> void:
 		if money_reward_amount > 0:
 			var add_money_action_data: Array[Dictionary] = [
 					{
-					Scripts.ACTION_ADD_MONEY: {"money_amount": money_reward_amount}
+					Scripts.ACTION_ADD_MONEY: {
+						"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
+						"money_amount": money_reward_amount
+						}
 					}
 				]
 			
-			var add_money_action: BaseAction = ActionGenerator.create_actions(null, null, [], add_money_action_data, null)[0]
+			# generate fake card play request for the action
+			var card_play_request: CardPlayRequest = HandManager.create_card_play_request(null, player, false, false)
+			var add_money_action: BaseAction = ActionGenerator.create_actions(player, card_play_request, [player], add_money_action_data, null)[0]
 			
 			var money_reward_button: BaseRewardButton = Scenes.MONEY_REWARD_BUTTON.instantiate()
 			money_reward_button.init(add_money_action, reward_group)
@@ -63,15 +70,16 @@ func populate_reward_display() -> void:
 			var draft_card_action_data: Array[Dictionary] = [
 				{
 				Scripts.ACTION_PICK_CARDS: {
-					"card_pick_type": ActionBasePickCards.CARD_PICK_TYPES.DRAFT,
+					"card_pick_type": ActionBasePickCards.PICK_DRAFT,
 					"pick_draft_cards": true,
 					"draft_cards": card_draft,
 					"action_data": [{Scripts.ACTION_ADD_CARDS_TO_DECK: {}}]
 					}
 				}
 			]
-			
-			var draft_card_action: BaseAction = ActionGenerator.create_actions(null, null, [], draft_card_action_data, null)[0]
+			# generate fake card play request for the action
+			var card_play_request: CardPlayRequest = HandManager.create_card_play_request(null, player, false, false)
+			var draft_card_action: BaseAction = ActionGenerator.create_actions(player, card_play_request, [player], draft_card_action_data, null)[0]
 			
 			var card_reward_button: BaseRewardButton = Scenes.CARD_REWARD_BUTTON.instantiate()
 			card_reward_button.init(draft_card_action, reward_group)
@@ -87,12 +95,14 @@ func populate_reward_display() -> void:
 			var draft_artifact_action_data: Array[Dictionary] = [
 				{
 				Scripts.ACTION_ADD_ARTIFACT: {
+					"target_override": BaseAction.TARGET_OVERRIDES.PLAYER,
 					"artifact_id": artifact_id
 					}
 				}
 			]
-			
-			var draft_artifact_action: BaseAction = ActionGenerator.create_actions(null, null, [], draft_artifact_action_data, null)[0]
+			# generate fake card play request for the action
+			var card_play_request: CardPlayRequest = HandManager.create_card_play_request(null, player, false, false)
+			var draft_artifact_action: BaseAction = ActionGenerator.create_actions(player, card_play_request, [player], draft_artifact_action_data, null)[0]
 			
 			var artifact_reward_button: BaseRewardButton = Scenes.ARTIFACT_REWARD_BUTTON.instantiate()
 			artifact_reward_button.init(draft_artifact_action, reward_group)
@@ -116,20 +126,6 @@ func _on_reward_group_selected(reward_group: int):
 #endregion
 
 #region Reward Data
-func add_location_rewards() -> void:
-	# adds rewards from the location to the end of combat rewards
-	var player: Player = Global.get_player()
-	var action_data: Array[Dictionary] = [{
-	Scripts.ACTION_GRANT_REWARDS: {
-		"reward_group": 0,
-		"money_amount": Random.get_location_money_reward(),
-		"card_drafts": Random.get_location_card_rewards(),
-		"artifact_ids": Random.get_location_artifact_rewards(),
-		}
-	}]
-	var grant_reward_action: BaseAction = ActionGenerator.create_actions(player, null, [player], action_data, null)[0]
-	grant_reward_action.perform_action()
-
 func add_rewards(reward_group: int, money_amount: int, card_drafts: Array[Array], artifact_ids: Array[String], custom_action_data: Array[Array]):
 	# adds rewards which can be populated into the display
 	
@@ -187,11 +183,31 @@ func _on_reward_clear_requested(reward_group: int):
 
 #endregion
 
-func _on_combat_started(_event_id: String):
+func _on_combat_started(event_object_id: String):
 	visible = false
-	add_location_rewards()
+	# generate rewards if the event has them
+	var event_data: EventData = null
+	if event_object_id == "":
+		event_data = Global.get_player_event_data()
+	else:
+		event_data = Global.get_event_data(event_object_id)
+	
+	if event_data == null:
+		DebugLogger.log_error("No event with id of {0} found to populate rewards".format(event_object_id))
+		return
+	
+	if event_data.event_has_combat_rewards:
+		ActionGenerator.generate_add_location_rewards()
 
 func _on_combat_ended():
+	if ActionHandler.actions_being_performed:
+		await ActionHandler.actions_ended
+	if not Global.player_data.player_health > 0:
+		clear_reward_display()
+		clear_rewards()
+		visible = false
+		return
+	
 	if not Global.is_end_of_run():
 		visible = true
 		populate_reward_display()
@@ -214,4 +230,9 @@ func _on_continue_button_up():
 		Signals.run_victory.emit()
 
 func _on_map_location_selected(_location_data: LocationData):
+	visible = false
+
+func _on_player_killed(_player: Player):
+	clear_rewards()
+	clear_reward_display()
 	visible = false

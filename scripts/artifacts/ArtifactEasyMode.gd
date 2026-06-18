@@ -1,4 +1,4 @@
-# sets enemy health to 1 at the start of combat
+## Sets enemy health to 1 at the start of combat
 extends BaseArtifact
 
 func connect_signals() -> void:
@@ -6,7 +6,7 @@ func connect_signals() -> void:
 	Signals.player_turn_started.connect(_on_player_turn_started)
 	
 func _on_player_turn_started() -> void:
-	if Global.get_combat_stats().turn_count == 1:
+	if StatsHandler.get_turn_count() == 1:
 		if artifact_data.artifact_counter > 0:
 			var enemies: Array[Node] = Global.get_tree().get_nodes_in_group("enemies")
 			for enemy: Enemy in enemies:

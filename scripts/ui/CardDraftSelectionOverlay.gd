@@ -17,7 +17,7 @@ func _ready():
 
 func _on_card_pick_requested(card_pick_action: ActionBasePickCards):
 	if card_pick_action != null:
-		if card_pick_action.get_card_pick_type() == ActionBasePickCards.CARD_PICK_TYPES.DRAFT:
+		if card_pick_action.get_card_pick_type() == ActionBasePickCards.PICK_DRAFT:
 			current_card_pick_action = card_pick_action
 			visible = true
 			populate_cards(card_pick_action.get_pickable_cards())

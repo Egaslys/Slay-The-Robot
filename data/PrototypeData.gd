@@ -10,6 +10,15 @@ class_name PrototypeData
 ## This source of truth is loaded from config data on game load and instances made from it via get_prototype before being modified
 @export var object_uid: String = ""
 
+static var unique_id_counter = 0
+
+static func generate_unique_id(prototype_data: PrototypeData) -> String:
+	var prefix: String = prototype_data.get_unique_id_prefix()
+	unique_id_counter += 1
+	if unique_id_counter >= 10000000:
+		unique_id_counter = 0
+	return prefix + "-" + str(Time.get_unix_time_from_system() * 1000) + str(Time.get_ticks_msec()) + "-" + str(unique_id_counter)
+
 func get_unique_id_prefix() -> String:
 	## returns a prefix used in unique ID string generation
 	## used in UIDGenerator
@@ -19,7 +28,7 @@ func get_unique_id_prefix() -> String:
 func get_prototype(duplicate_sub_prototypes: bool = true) -> PrototypeData:
 	# returns a copy of this object, with a new object_uid for the copy
 	var prototype: PrototypeData = duplicate(true)
-	prototype.object_uid = UIDGenerator.generate_unique_id(self)
+	prototype.object_uid = PrototypeData.generate_unique_id(self)
 	
 	# generates new prototypes for all sub objects
 	if duplicate_sub_prototypes:
